@@ -1,6 +1,11 @@
 import Link from 'next/link';
+import { cookies } from 'next/headers';
+import AdminLogout from './AdminLogout';
 
-export default function Header() {
+export default async function Header() {
+  const cookieStore = await cookies();
+  const isAdmin = cookieStore.get('admin_session')?.value === 'authenticated';
+
   return (
     <header className="w-full bg-zinc-950 border-b border-zinc-800 px-4 py-3">
       <div className="max-w-5xl mx-auto flex items-center justify-between">
@@ -14,12 +19,25 @@ export default function Header() {
           >
             会员登录
           </Link>
-          <Link
-            href="/admin/login"
-            className="bg-pink-500 hover:bg-pink-400 text-white text-sm px-4 py-1.5 rounded-full transition-colors"
-          >
-            管理员登录
-          </Link>
+
+          {isAdmin ? (
+            <>
+              <Link
+                href="/admin"
+                className="text-white text-sm font-semibold px-3 py-1.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
+              >
+                Admin ⚙️
+              </Link>
+              <AdminLogout />
+            </>
+          ) : (
+            <Link
+              href="/admin/login"
+              className="bg-pink-500 hover:bg-pink-400 text-white text-sm px-4 py-1.5 rounded-full transition-colors"
+            >
+              管理员登录
+            </Link>
+          )}
         </div>
       </div>
     </header>
