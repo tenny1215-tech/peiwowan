@@ -1,6 +1,5 @@
 import { getPeople } from '@/lib/notion';
 import Link from 'next/link';
-import AdminLogout from '@/components/AdminLogout';
 import AdminDeleteButton from '@/components/AdminDeleteButton';
 
 export const revalidate = 0;
@@ -29,7 +28,6 @@ export default async function AdminDashboard() {
             >
               + 添加人员
             </Link>
-            <AdminLogout />
           </div>
         </div>
 
