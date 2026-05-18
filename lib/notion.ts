@@ -50,3 +50,46 @@ export async function getPersonById(id: string): Promise<Person | null> {
     return null;
   }
 }
+
+function buildProperties(data: Partial<Omit<Person, 'id'>>) {
+  const props: Record<string, any> = {};
+  if (data.name !== undefined)
+    props['昵称'] = { title: [{ text: { content: data.name } }] };
+  if (data.games !== undefined)
+    props['游戏项目'] = { multi_select: data.games.map((n) => ({ name: n })) };
+  if (data.skills !== undefined)
+    props['技能标签'] = { multi_select: data.skills.map((n) => ({ name: n })) };
+  if (data.location !== undefined)
+    props['所在地区'] = { rich_text: [{ text: { content: data.location } }] };
+  if (data.price !== undefined)
+    props['收费标准'] = { rich_text: [{ text: { content: data.price } }] };
+  if (data.bio !== undefined)
+    props['个人简介'] = { rich_text: [{ text: { content: data.bio } }] };
+  if (data.contact !== undefined)
+    props['联系方式'] = { rich_text: [{ text: { content: data.contact } }] };
+  if (data.status !== undefined)
+    props['状态'] = { select: { name: data.status } };
+  if (data.image !== undefined)
+    props['图片'] = { url: data.image || null };
+  if (data.audio !== undefined)
+    props['语音'] = { url: data.audio || null };
+  return props;
+}
+
+export async function createPerson(data: Omit<Person, 'id'>) {
+  return notion.pages.create({
+    parent: { database_id: DATABASE_ID },
+    properties: buildProperties(data),
+  });
+}
+
+export async function updatePerson(id: string, data: Partial<Omit<Person, 'id'>>) {
+  return notion.pages.update({
+    page_id: id,
+    properties: buildProperties(data),
+  });
+}
+
+export async function deletePerson(id: string) {
+  return notion.pages.update({ page_id: id, archived: true });
+}
