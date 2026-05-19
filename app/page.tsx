@@ -13,7 +13,7 @@ export default function Home() {
         <h1 className="font-black leading-none mb-8" style={{ fontSize: 'clamp(3rem, 8vw, 6rem)' }}>
           <div className="text-white">专业陪玩</div>
           <div className="text-[#CCFF00]">随叫随到</div>
-          <div className="text-zinc-600">在欧洲，不孤单。</div>
+          <div className="text-zinc-600">人在欧洲，不孤单。</div>
         </h1>
 
         <p className="text-zinc-400 text-lg max-w-xl mb-10 leading-relaxed">
