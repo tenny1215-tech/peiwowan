@@ -52,6 +52,8 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="max-w-6xl mx-auto px-6"><div className="h-px bg-zinc-800/60" /></div>
+
       {/* Services */}
       <section className="max-w-6xl mx-auto px-6 py-20">
         <p className="text-[#CCFF00] text-sm font-semibold mb-3 tracking-wide">我们的服务</p>
@@ -59,46 +61,48 @@ export default function Home() {
         <p className="text-zinc-500 text-base mb-12">每一种需要陪伴的时刻，我们都有人在</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-zinc-900 rounded-2xl p-8 flex flex-col justify-between min-h-[300px]">
+          <div className="group bg-zinc-900 hover:bg-[#CCFF00] rounded-2xl p-8 flex flex-col justify-between min-h-[300px] transition-colors duration-200">
             <div>
-              <p className="text-zinc-600 text-sm mb-6">01.</p>
-              <h3 className="text-white text-xl font-bold mb-4">游戏陪练</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed">
+              <p className="text-zinc-600 group-hover:text-black/40 text-sm mb-6 transition-colors duration-200">01.</p>
+              <h3 className="text-white group-hover:text-black text-xl font-bold mb-4 transition-colors duration-200">游戏陪练</h3>
+              <p className="text-zinc-500 group-hover:text-black/70 text-sm leading-relaxed transition-colors duration-200">
                 王者荣耀、英雄联盟、原神……专业玩家带你上分，组队开黑不再难。
               </p>
             </div>
-            <Link href="/companions" className="text-[#CCFF00] text-sm mt-8 hover:underline inline-flex items-center gap-1">
+            <Link href="/companions" className="text-[#CCFF00] group-hover:text-black text-sm mt-8 hover:underline inline-flex items-center gap-1 transition-colors duration-200">
               → 查看陪玩
             </Link>
           </div>
 
-          <div className="bg-[#CCFF00] rounded-2xl p-8 flex flex-col justify-between min-h-[300px]">
+          <div className="group bg-zinc-900 hover:bg-[#CCFF00] rounded-2xl p-8 flex flex-col justify-between min-h-[300px] transition-colors duration-200">
             <div>
-              <p className="text-black/40 text-sm mb-6">02.</p>
-              <h3 className="text-black text-xl font-bold mb-4">语音聊天陪伴</h3>
-              <p className="text-black/70 text-sm leading-relaxed">
+              <p className="text-zinc-600 group-hover:text-black/40 text-sm mb-6 transition-colors duration-200">02.</p>
+              <h3 className="text-white group-hover:text-black text-xl font-bold mb-4 transition-colors duration-200">语音聊天陪伴</h3>
+              <p className="text-zinc-500 group-hover:text-black/70 text-sm leading-relaxed transition-colors duration-200">
                 异乡生活有时就是需要一个说话的人。有趣的灵魂，随时在线陪你聊。
               </p>
             </div>
-            <Link href="/companions" className="text-black text-sm mt-8 hover:underline inline-flex items-center gap-1 font-semibold">
+            <Link href="/companions" className="text-[#CCFF00] group-hover:text-black text-sm mt-8 hover:underline inline-flex items-center gap-1 font-semibold transition-colors duration-200">
               → 了解详情
             </Link>
           </div>
 
-          <div className="bg-zinc-900 rounded-2xl p-8 flex flex-col justify-between min-h-[300px]">
+          <div className="group bg-zinc-900 hover:bg-[#CCFF00] rounded-2xl p-8 flex flex-col justify-between min-h-[300px] transition-colors duration-200">
             <div>
-              <p className="text-zinc-600 text-sm mb-6">03.</p>
-              <h3 className="text-white text-xl font-bold mb-4">私人定制服务</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed">
+              <p className="text-zinc-600 group-hover:text-black/40 text-sm mb-6 transition-colors duration-200">03.</p>
+              <h3 className="text-white group-hover:text-black text-xl font-bold mb-4 transition-colors duration-200">私人定制服务</h3>
+              <p className="text-zinc-500 group-hover:text-black/70 text-sm leading-relaxed transition-colors duration-200">
                 特定时段预约、多人组队、长期合作……按需匹配，灵活安排。
               </p>
             </div>
-            <Link href="/about" className="text-[#CCFF00] text-sm mt-8 hover:underline inline-flex items-center gap-1">
+            <Link href="/about" className="text-[#CCFF00] group-hover:text-black text-sm mt-8 hover:underline inline-flex items-center gap-1 transition-colors duration-200">
               → 联系我们
             </Link>
           </div>
         </div>
       </section>
+
+      <div className="max-w-6xl mx-auto px-6"><div className="h-px bg-zinc-800/60" /></div>
 
       {/* How to start */}
       <section className="max-w-6xl mx-auto px-6 py-20">
