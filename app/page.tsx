@@ -37,17 +37,17 @@ export default function Home() {
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-zinc-900 rounded-2xl p-6">
-            <p className="text-white font-black mb-1" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>50+</p>
-            <p className="text-zinc-500 text-sm">认证陪玩</p>
+          <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/20 rounded-2xl p-6">
+            <p className="text-[#CCFF00] font-black mb-1" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>50+</p>
+            <p className="text-zinc-400 text-sm">认证陪玩</p>
           </div>
-          <div className="bg-zinc-900 rounded-2xl p-6">
-            <p className="text-white font-black mb-1" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>10€</p>
-            <p className="text-zinc-500 text-sm">起步价格/小时</p>
+          <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/20 rounded-2xl p-6">
+            <p className="text-[#CCFF00] font-black mb-1" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>10€</p>
+            <p className="text-zinc-400 text-sm">起步价格/小时</p>
           </div>
-          <div className="bg-zinc-900 rounded-2xl p-6">
-            <p className="text-white font-black mb-1" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>7×24</p>
-            <p className="text-zinc-500 text-sm">跨时区服务</p>
+          <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/20 rounded-2xl p-6">
+            <p className="text-[#CCFF00] font-black mb-1" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>7×24</p>
+            <p className="text-zinc-400 text-sm">跨时区服务</p>
           </div>
         </div>
       </section>
