@@ -109,7 +109,7 @@ export default function Home() {
           <Link href="/" className="text-white font-black text-xl">
             陪我<span className="text-[#CCFF00]">玩.</span>
           </Link>
-          <p className="text-zinc-600 text-sm">专为欧洲华人打造 · 服务来自国内 · 跨越时差的陪伴</p>
+          <p className="text-zinc-600 text-sm">专为欧洲华人打造 · 跨越时差的陪伴</p>
         </div>
       </footer>
 
