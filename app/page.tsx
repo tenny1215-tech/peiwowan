@@ -120,9 +120,9 @@ export default function Home() {
             <div className="w-14 h-14 rounded-full border-2 border-[#CCFF00] flex items-center justify-center mb-6">
               <span className="text-[#CCFF00] font-black text-sm">02</span>
             </div>
-            <h3 className="text-white text-xl font-bold mb-4">加微信联系</h3>
+            <h3 className="text-white text-xl font-bold mb-4">滴滴在线陪玩</h3>
             <p className="text-zinc-500 text-sm leading-relaxed">
-              直接加陪玩的微信，和他们聊一聊，确认时间和内容，没有中间商阻碍沟通。
+              查看陪玩列表信息，直接滴滴开黑
             </p>
           </div>
           <div>
