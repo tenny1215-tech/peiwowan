@@ -5,6 +5,7 @@ import AdminLogout from './AdminLogout';
 export default async function Header() {
   const cookieStore = await cookies();
   const isAdmin = cookieStore.get('admin_session')?.value === 'authenticated';
+  const isCompanion = !!cookieStore.get('companion_session')?.value;
 
   return (
     <header className="w-full bg-[#161616] border-b border-white/5 px-6 py-4 sticky top-0 z-50">
@@ -20,6 +21,15 @@ export default async function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {isCompanion ? (
+            <Link href="/companion/room" className="text-zinc-400 hover:text-white text-sm transition-colors">
+              我的房间
+            </Link>
+          ) : (
+            <Link href="/companion/login" className="text-zinc-400 hover:text-white text-sm transition-colors">
+              陪玩登录
+            </Link>
+          )}
           {isAdmin ? (
             <>
               <Link href="/admin" className="text-zinc-400 hover:text-white text-sm transition-colors">
