@@ -5,7 +5,14 @@ import { Person } from '@/lib/notion';
 
 const GAMES = ['英雄联盟', '无畏契约', '三角洲'];
 const SKILLS = ['上分带队', '陪练', '开黑', '教学'];
-const STATUSES = ['可接单', '忙碌中', '下线'];
+const STATUSES = ['在线', '接单', '游戏中', '离线'];
+
+function generateKey() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = 'pw-';
+  for (let i = 0; i < 6; i++) result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
 
 type FormData = Omit<Person, 'id'>;
 
@@ -16,14 +23,24 @@ interface Props {
 
 const empty: FormData = {
   name: '', games: [], skills: [], location: '',
-  price: '', bio: '', contact: '', status: '可接单',
-  image: '', audio: '',
+  price: '', bio: '', contact: '', status: '在线',
+  image: '', audio: '', loginKey: '',
 };
 
 export default function PersonForm({ initial, personId }: Props) {
-  const [form, setForm] = useState<FormData>(initial || empty);
+  const [form, setForm] = useState<FormData>(() => {
+    const base = initial || empty;
+    return { ...base, loginKey: base.loginKey || generateKey() };
+  });
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const router = useRouter();
+
+  function copyKey() {
+    navigator.clipboard.writeText(form.loginKey);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   function toggle(field: 'games' | 'skills', value: string) {
     setForm((f) => ({
@@ -62,6 +79,25 @@ export default function PersonForm({ initial, personId }: Props) {
       <Field label="昵称 *">
         <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
           className={input} placeholder="例：小葵 🌸" />
+      </Field>
+
+      {/* 登录 Key */}
+      <Field label="登录 Key（发给陪玩师本人）">
+        <div className="flex items-center gap-2">
+          <span className="flex-1 bg-zinc-800 text-pink-300 rounded-xl px-4 py-3 text-sm font-mono tracking-wider">
+            {form.loginKey}
+          </span>
+          <button type="button" onClick={copyKey}
+            className="bg-zinc-700 hover:bg-zinc-600 text-white px-3 py-3 rounded-xl text-sm transition-colors whitespace-nowrap">
+            {copied ? '已复制' : '复制'}
+          </button>
+          {!personId && (
+            <button type="button" onClick={() => setForm({ ...form, loginKey: generateKey() })}
+              className="bg-zinc-700 hover:bg-zinc-600 text-zinc-300 px-3 py-3 rounded-xl text-sm transition-colors">
+              换一个
+            </button>
+          )}
+        </div>
       </Field>
 
       {/* 状态 */}

@@ -11,9 +11,16 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith('/companion/room')) {
+    const session = request.cookies.get('companion_session')?.value;
+    if (!session) {
+      return NextResponse.redirect(new URL('/companion/login', request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/companion/room/:path*'],
 };

@@ -15,6 +15,7 @@ export interface Person {
   status: string;
   image: string;
   audio: string;
+  loginKey: string;
 }
 
 function extractPerson(page: any): Person {
@@ -31,6 +32,7 @@ function extractPerson(page: any): Person {
     status: p['状态']?.select?.name || '',
     image: p['图片']?.url || '',
     audio: p['语音']?.url || '',
+    loginKey: p['登录Key']?.rich_text?.[0]?.plain_text || '',
   };
 }
 
@@ -73,7 +75,19 @@ function buildProperties(data: Partial<Omit<Person, 'id'>>) {
     props['图片'] = { url: data.image || null };
   if (data.audio !== undefined)
     props['语音'] = { url: data.audio || null };
+  if (data.loginKey !== undefined)
+    props['登录Key'] = { rich_text: [{ text: { content: data.loginKey } }] };
   return props;
+}
+
+export async function getPersonByKey(key: string): Promise<Person | null> {
+  const res = await notion.databases.query({
+    database_id: DATABASE_ID,
+    filter: { property: '登录Key', rich_text: { equals: key } },
+  });
+  const page = res.results[0];
+  if (!page) return null;
+  return extractPerson(page);
 }
 
 export async function createPerson(data: Omit<Person, 'id'>) {

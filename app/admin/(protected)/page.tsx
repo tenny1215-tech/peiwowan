@@ -5,9 +5,10 @@ import AdminDeleteButton from '@/components/AdminDeleteButton';
 export const revalidate = 0;
 
 const statusColors: Record<string, string> = {
-  '可接单': 'text-green-400',
-  '忙碌中': 'text-yellow-400',
-  '下线': 'text-zinc-500',
+  '在线': 'text-green-400',
+  '接单': 'text-blue-400',
+  '游戏中': 'text-yellow-400',
+  '离线': 'text-zinc-500',
 };
 
 export default async function AdminDashboard() {
