@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
 
   if (!channelRes.ok) {
     const err = await channelRes.text();
-    return NextResponse.json({ error: '创建房间失败', detail: err, guildId: GUILD_ID, hasToken: !!BOT_TOKEN }, { status: 500 });
+    const envKeys = Object.keys(process.env).filter(k => k.includes('DISCORD'));
+    return NextResponse.json({ error: '创建房间失败', detail: err, hasToken: !!BOT_TOKEN, envKeys }, { status: 500 });
   }
 
   const channel = await channelRes.json();
