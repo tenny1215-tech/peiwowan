@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
   const { companionName } = await req.json();
   if (!companionName) return NextResponse.json({ error: '缺少参数' }, { status: 400 });
 
-  const now = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris' });
-  const channelName = `陪玩-${companionName}-${now}`;
+  const ts = Date.now().toString().slice(-6);
+  const channelName = `peiwan-room-${ts}`;
 
   // 创建语音频道
   const channelRes = await fetch(`${DISCORD_API}/guilds/${GUILD_ID}/channels`, {
