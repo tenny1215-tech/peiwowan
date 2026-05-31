@@ -1,5 +1,6 @@
 import { getPersonById, getPeople } from '@/lib/notion';
 import AudioPlayer from '@/components/AudioPlayer';
+import StartSessionButton from '@/components/StartSessionButton';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -24,9 +25,10 @@ const skillColors: Record<string, string> = {
 };
 
 const statusConfig: Record<string, { color: string; label: string }> = {
-  '可接单': { color: 'bg-green-500', label: '可接单 ✅' },
-  '忙碌中': { color: 'bg-yellow-500', label: '忙碌中 🔴' },
-  '下线': { color: 'bg-zinc-500', label: '下线 ⚫' },
+  '在线': { color: 'bg-green-500', label: '在线 🟢' },
+  '接单': { color: 'bg-blue-500', label: '接单 ✅' },
+  '游戏中': { color: 'bg-yellow-500', label: '游戏中 🎮' },
+  '离线': { color: 'bg-zinc-500', label: '离线 ⚫' },
 };
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
@@ -132,13 +134,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         )}
 
         {/* 按钮 */}
-        <div className="flex gap-3 pt-2 pb-8">
-          <button className="flex-1 bg-pink-500 text-white py-3 rounded-full font-semibold hover:bg-pink-400 transition-colors">
-            + 关注
-          </button>
-          <button className="flex-1 bg-yellow-500 text-black py-3 rounded-full font-semibold hover:bg-yellow-400 transition-colors">
-            💬 打招呼
-          </button>
+        <div className="flex flex-col gap-3 pt-2 pb-8">
+          <StartSessionButton companionName={person.name} />
         </div>
       </div>
     </div>
