@@ -16,6 +16,7 @@ export interface Person {
   image: string;
   audio: string;
   loginKey: string;
+  discordId: string;
 }
 
 function extractPerson(page: any): Person {
@@ -33,6 +34,7 @@ function extractPerson(page: any): Person {
     image: p['图片']?.url || '',
     audio: p['语音']?.url || '',
     loginKey: p['登录Key']?.rich_text?.[0]?.plain_text || '',
+    discordId: p['Discord ID']?.rich_text?.[0]?.plain_text || '',
   };
 }
 
@@ -77,6 +79,8 @@ function buildProperties(data: Partial<Omit<Person, 'id'>>) {
     props['语音'] = { url: data.audio || null };
   if (data.loginKey !== undefined)
     props['登录Key'] = { rich_text: [{ text: { content: data.loginKey } }] };
+  if (data.discordId !== undefined)
+    props['Discord ID'] = { rich_text: [{ text: { content: data.discordId } }] };
   return props;
 }
 

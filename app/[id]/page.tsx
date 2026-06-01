@@ -135,7 +135,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
         {/* 按钮 */}
         <div className="flex flex-col gap-3 pt-2 pb-8">
-          <StartSessionButton companionName={person.name} />
+          <StartSessionButton companionName={person.name} companionId={person.id} />
         </div>
       </div>
     </div>

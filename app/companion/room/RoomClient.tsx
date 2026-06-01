@@ -221,6 +221,13 @@ export default function RoomClient({ person }: { person: Person }) {
             </div>
           </Field>
 
+          {/* Discord ID */}
+          <Field label="Discord 用户 ID">
+            <input value={form.discordId || ''} onChange={(e) => setForm({ ...form, discordId: e.target.value })}
+              className={inputCls} placeholder="例：123456789012345678" />
+            <p className="text-zinc-600 text-xs mt-1">填写后玩家下单时会自动通知你。在 Discord 设置 → 开启开发者模式 → 右键自己头像复制</p>
+          </Field>
+
           {/* 登录 Key（只读）*/}
           <Field label="登录 Key（不可修改）">
             <div className="bg-zinc-900 text-zinc-500 rounded-xl px-4 py-3 text-sm font-mono tracking-wider">

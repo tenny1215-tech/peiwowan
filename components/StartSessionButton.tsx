@@ -1,7 +1,13 @@
 'use client';
 import { useState } from 'react';
 
-export default function StartSessionButton({ companionName }: { companionName: string }) {
+export default function StartSessionButton({
+  companionName,
+  companionId,
+}: {
+  companionName: string;
+  companionId: string;
+}) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ url: string; channelName: string } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -11,7 +17,7 @@ export default function StartSessionButton({ companionName }: { companionName: s
     const res = await fetch('/api/discord/create-room', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ companionName }),
+      body: JSON.stringify({ companionName, companionId }),
     });
     const data = await res.json();
     if (res.ok) setResult(data);
@@ -31,7 +37,7 @@ export default function StartSessionButton({ companionName }: { companionName: s
         <div className="flex items-center gap-2">
           <span className="text-lg">🎮</span>
           <div>
-            <p className="text-white text-sm font-semibold">Discord 房间已创建</p>
+            <p className="text-white text-sm font-semibold">已通知陪玩师，等她加入～</p>
             <p className="text-zinc-400 text-xs">{result.channelName} · 24小时有效</p>
           </div>
         </div>
@@ -51,7 +57,7 @@ export default function StartSessionButton({ companionName }: { companionName: s
             {copied ? '已复制' : '复制链接'}
           </button>
         </div>
-        <p className="text-zinc-500 text-xs">把链接发给陪玩师，一起进入语音频道</p>
+        <p className="text-zinc-500 text-xs">陪玩师会收到通知，进入后即可开始</p>
       </div>
     );
   }
