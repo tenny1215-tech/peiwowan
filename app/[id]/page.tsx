@@ -1,6 +1,6 @@
 import { getPersonById, getPeople } from '@/lib/notion';
 import AudioPlayer from '@/components/AudioPlayer';
-import StartSessionButton from '@/components/StartSessionButton';
+import BookingModal from '@/components/BookingModal';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -135,7 +135,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
         {/* 按钮 */}
         <div className="flex flex-col gap-3 pt-2 pb-8">
-          <StartSessionButton companionName={person.name} companionId={person.id} />
+          <BookingModal companionName={person.name} companionId={person.id} companionPrice={person.price} />
         </div>
       </div>
     </div>
