@@ -33,7 +33,7 @@ export default function BookingModal({
     if (res.ok) {
       router.push(`/order/${data.orderId}`);
     } else {
-      setError('提交失败，请重试');
+      setError(data.error || '提交失败，请重试');
     }
   }
 

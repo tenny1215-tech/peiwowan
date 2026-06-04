@@ -62,7 +62,8 @@ export async function POST(req: NextRequest) {
     customerDiscordId,
   });
 
-  await sendFeishuNotification(order);
+  // 飞书通知失败不影响订单创建
+  sendFeishuNotification(order).catch((e) => console.error('飞书通知失败:', e));
 
   return NextResponse.json({ orderId: order.id });
 }
