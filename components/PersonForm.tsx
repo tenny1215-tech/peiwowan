@@ -24,7 +24,7 @@ interface Props {
 const empty: FormData = {
   name: '', games: [], skills: [], location: '',
   price: '', bio: '', contact: '', status: '在线',
-  image: '', audio: '', loginKey: '',
+  image: '', audio: '', loginKey: '', discordId: '', discordChannelId: '',
 };
 
 export default function PersonForm({ initial, personId }: Props) {
