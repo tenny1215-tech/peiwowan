@@ -29,10 +29,16 @@ export default function Home() {
             浏览陪玩 →
           </Link>
           <Link
-            href="/about"
-            className="border border-zinc-700 text-zinc-400 px-8 py-3.5 rounded-lg font-semibold hover:text-white hover:border-zinc-500 transition-colors flex items-center gap-2"
+            href="/member/topup"
+            className="bg-[#CCFF00] text-black px-8 py-3.5 rounded-lg font-semibold hover:bg-[#b8e600] transition-colors"
           >
-            <span className="text-xs">▶</span> 了解更多
+            💰 充值中心
+          </Link>
+          <Link
+            href="/member"
+            className="border border-zinc-700 text-zinc-400 px-8 py-3.5 rounded-lg font-semibold hover:text-white hover:border-zinc-500 transition-colors"
+          >
+            查看余额
           </Link>
         </div>
 
@@ -86,9 +92,9 @@ export default function Home() {
             <div className="w-14 h-14 rounded-full border-2 border-[#CCFF00] flex items-center justify-center mb-6">
               <span className="text-[#CCFF00] font-black text-sm">02</span>
             </div>
-            <h3 className="text-white text-xl font-bold mb-4">滴滴在线陪玩</h3>
+            <h3 className="text-white text-xl font-bold mb-4">充值开通账户</h3>
             <p className="text-zinc-500 text-sm leading-relaxed">
-              查看陪玩列表信息，直接滴滴开黑
+              选择套餐充值，余额到账后即可预约，1币1元，余额永久有效。
             </p>
           </div>
           <div>
