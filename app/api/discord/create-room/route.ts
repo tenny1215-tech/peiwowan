@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPersonById, updatePerson } from '@/lib/notion';
+import { getCustomerByDiscordId, deductBalance } from '@/lib/customers';
 
 const DISCORD_API = 'https://discord.com/api/v10';
 const GUILD_ID = process.env.DISCORD_GUILD_ID!;
@@ -28,8 +29,16 @@ async function sendDM(discordUserId: string, message: string) {
 }
 
 export async function POST(req: NextRequest) {
-  const { companionId } = await req.json();
+  const { companionId, discordId, cost } = await req.json();
   if (!companionId) return NextResponse.json({ error: '缺少参数' }, { status: 400 });
+
+  // 扣除客户余额
+  if (discordId && cost) {
+    const customer = await getCustomerByDiscordId(discordId);
+    if (!customer) return NextResponse.json({ error: '账户不存在' }, { status: 404 });
+    if (customer.balance < cost) return NextResponse.json({ error: '余额不足' }, { status: 402 });
+    await deductBalance(customer.id, cost, customer.balance);
+  }
 
   const person = await getPersonById(companionId);
   if (!person) return NextResponse.json({ error: '陪玩师不存在' }, { status: 404 });
