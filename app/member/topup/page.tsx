@@ -8,19 +8,19 @@ const PACKAGES = [
   { coins: 299, price: '¥299', label: '豪华包', qr: '/qr-299.png' },
 ];
 
+const FEISHU_URL = 'https://applink.feishu.cn/client/chat/open?openId=ou_ae7fa64e5ea387d1faceb978afc73ba4';
+
 type Step = 'select' | 'pay' | 'done';
 
 export default function TopupPage() {
   const [step, setStep] = useState<Step>('select');
   const [selected, setSelected] = useState<typeof PACKAGES[0] | null>(null);
   const [discordId, setDiscordId] = useState('');
-  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   async function handleSubmit() {
-    if (!discordId.trim()) { setError('请填写 Discord 用户名'); return; }
-    if (!name.trim()) { setError('请填写昵称'); return; }
+    if (!discordId.trim()) { setError('请填写 Discord ID'); return; }
     setLoading(true);
     setError('');
     const res = await fetch('/api/member/topup', {
@@ -28,7 +28,7 @@ export default function TopupPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         discordId: discordId.trim(),
-        name: name.trim(),
+        name: discordId.trim(),
         coins: selected!.coins,
         price: selected!.price,
       }),
@@ -54,6 +54,10 @@ export default function TopupPage() {
           >
             查看我的账户
           </Link>
+          <a href={FEISHU_URL} target="_blank" rel="noopener noreferrer"
+            className="block text-zinc-500 text-xs underline hover:text-zinc-300 transition-colors">
+            遇到问题？联系客服
+          </a>
         </div>
       </div>
     );
@@ -70,7 +74,7 @@ export default function TopupPage() {
 
           <div className="bg-zinc-900 rounded-2xl p-4 flex items-center justify-between">
             <span className="text-zinc-400">{selected.label}</span>
-            <span className="text-white font-bold">{selected.price} → {selected.coins}币</span>
+            <span className="text-white font-bold">{selected.price} → {selected.coins} 硬币</span>
           </div>
 
           <div className="text-center space-y-2">
@@ -78,34 +82,32 @@ export default function TopupPage() {
             <div className="bg-white rounded-2xl p-3 inline-block">
               <img src={selected.qr} alt="支付宝收款码" className="w-44 h-44 object-contain" />
             </div>
-            <p className="text-zinc-500 text-xs">备注填写你的 Discord 用户名</p>
           </div>
 
           <div className="space-y-3">
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="你的昵称（第一次充值填写）"
-              className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
-            />
-            <input
-              type="text"
               value={discordId}
               onChange={(e) => setDiscordId(e.target.value)}
-              placeholder="你的 Discord 用户名"
+              placeholder="Discord ID（一定要填写）"
               className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
             />
             {error && <p className="text-red-400 text-xs">{error}</p>}
           </div>
 
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full bg-pink-500 hover:bg-pink-400 disabled:opacity-50 text-white py-3 rounded-2xl font-semibold transition-colors"
-          >
-            {loading ? '提交中...' : '✅ 我已付款'}
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="w-full bg-pink-500 hover:bg-pink-400 disabled:opacity-50 text-white py-3 rounded-2xl font-semibold transition-colors"
+            >
+              {loading ? '提交中...' : '✅ 我已付款'}
+            </button>
+            <a href={FEISHU_URL} target="_blank" rel="noopener noreferrer"
+              className="block text-center text-zinc-500 text-xs underline hover:text-zinc-300 transition-colors">
+              遇到问题？联系客服
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -119,7 +121,7 @@ export default function TopupPage() {
           <h1 className="text-white font-bold text-xl">充值</h1>
         </div>
 
-        <p className="text-zinc-400 text-sm">选择充值套餐，1币 = 1元，可用于预约陪玩</p>
+        <p className="text-zinc-400 text-sm">选择充值套餐，1硬币 = 1元，可用于预约陪玩</p>
 
         <div className="space-y-3">
           {PACKAGES.map((pkg) => (
@@ -130,7 +132,7 @@ export default function TopupPage() {
             >
               <div className="text-left">
                 <p className="font-semibold">{pkg.label}</p>
-                <p className="text-zinc-400 text-sm">{pkg.coins} 币</p>
+                <p className="text-zinc-400 text-sm">{pkg.coins} 硬币</p>
               </div>
               <p className="text-pink-400 font-bold text-lg">{pkg.price}</p>
             </button>
