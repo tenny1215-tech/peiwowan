@@ -39,15 +39,9 @@ export default async function Header() {
             </>
           ) : (
             <Link href="/admin/login" className="text-zinc-600 hover:text-zinc-400 text-xs transition-colors">
-              管理
+              管理登录
             </Link>
           )}
-          <Link
-            href="/companions"
-            className="bg-white text-black text-sm font-bold px-5 py-2 rounded-full hover:bg-[#CCFF00] transition-colors"
-          >
-            立即找陪玩
-          </Link>
         </div>
       </div>
     </header>
