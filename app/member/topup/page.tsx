@@ -3,9 +3,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const PACKAGES = [
-  { coins: 99, price: '¥99', label: '基础包' },
-  { coins: 199, price: '¥199', label: '超值包' },
-  { coins: 299, price: '¥299', label: '豪华包' },
+  { coins: 99, price: '¥99', label: '基础包', qr: '/qr-99.png' },
+  { coins: 199, price: '¥199', label: '超值包', qr: '/qr-199.png' },
+  { coins: 299, price: '¥299', label: '豪华包', qr: '/qr-299.png' },
 ];
 
 type Step = 'select' | 'pay' | 'done';
@@ -76,7 +76,7 @@ export default function TopupPage() {
           <div className="text-center space-y-2">
             <p className="text-zinc-400 text-sm">支付宝扫码付款</p>
             <div className="bg-white rounded-2xl p-3 inline-block">
-              <img src="/alipay-qr.png" alt="支付宝收款码" className="w-44 h-44 object-contain" />
+              <img src={selected.qr} alt="支付宝收款码" className="w-44 h-44 object-contain" />
             </div>
             <p className="text-zinc-500 text-xs">备注填写你的 Discord 用户名</p>
           </div>
