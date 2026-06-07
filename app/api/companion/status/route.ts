@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updatePerson } from '@/lib/notion';
 
-const VALID_STATUSES = ['在线', '接单', '游戏中', '离线'];
+const VALID_STATUSES = ['在线', '可接单', '游戏中', '离线'];
 
 export async function PATCH(req: NextRequest) {
   const companionId = req.cookies.get('companion_session')?.value;
