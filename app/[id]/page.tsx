@@ -26,7 +26,8 @@ const skillColors: Record<string, string> = {
 
 const statusConfig: Record<string, { color: string; label: string }> = {
   '在线': { color: 'bg-green-500', label: '在线 🟢' },
-  '接单': { color: 'bg-blue-500', label: '接单 ✅' },
+  '可接单': { color: 'bg-green-500', label: '可接单 🟢' },
+  '接单': { color: 'bg-green-500', label: '可接单 🟢' },
   '游戏中': { color: 'bg-yellow-500', label: '游戏中 🎮' },
   '离线': { color: 'bg-zinc-500', label: '离线 ⚫' },
 };

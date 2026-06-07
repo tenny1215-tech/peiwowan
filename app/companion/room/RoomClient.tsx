@@ -6,7 +6,7 @@ const GAMES = ['英雄联盟', '无畏契约', '三角洲'];
 const SKILLS = ['上分带队', '陪练', '开黑', '教学'];
 const STATUSES = [
   { label: '在线', color: 'bg-green-500 hover:bg-green-400', dot: 'bg-green-400' },
-  { label: '接单', color: 'bg-blue-500 hover:bg-blue-400', dot: 'bg-blue-400' },
+  { label: '可接单', color: 'bg-green-500 hover:bg-green-400', dot: 'bg-green-400' },
   { label: '游戏中', color: 'bg-yellow-500 hover:bg-yellow-400', dot: 'bg-yellow-400' },
   { label: '离线', color: 'bg-zinc-600 hover:bg-zinc-500', dot: 'bg-zinc-400' },
 ];
@@ -22,6 +22,7 @@ export default function RoomClient({ person }: { person: Person }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [uploading, setUploading] = useState<'image' | 'audio' | null>(null);
+  const [uploadError, setUploadError] = useState('');
   const imageRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLInputElement>(null);
 
@@ -43,6 +44,7 @@ export default function RoomClient({ person }: { person: Person }) {
 
   async function handleUpload(file: File, type: 'image' | 'audio') {
     setUploading(type);
+    setUploadError('');
     const fd = new FormData();
     fd.append('file', file);
     fd.append('type', type);
@@ -50,6 +52,9 @@ export default function RoomClient({ person }: { person: Person }) {
     if (res.ok) {
       const { url } = await res.json();
       setForm((f) => ({ ...f, [type]: url }));
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setUploadError(data.error || '上传失败，请重试');
     }
     setUploading(null);
   }
@@ -190,6 +195,7 @@ export default function RoomClient({ person }: { person: Person }) {
           </Field>
 
           {/* 头像上传 */}
+          {uploadError && <p className="text-red-400 text-xs px-1">{uploadError}</p>}
           <Field label="头像">
             <div className="flex items-center gap-3">
               {form.image && (
