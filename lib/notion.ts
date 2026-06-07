@@ -23,15 +23,24 @@ export interface Person {
 function extractFileUrl(field: any): string {
   if (!field) return '';
   // URL 类型字段
-  if (field.url) return field.url;
+  if (typeof field.url === 'string') return field.url;
   // Files & media 类型字段（直接上传到 Notion）
   const file = field.files?.[0];
-  if (!file) return '';
-  return file.file?.url || file.external?.url || '';
+  if (file) return file.file?.url || file.external?.url || '';
+  // 页面 cover / icon 格式
+  if (field.type === 'file') return field.file?.url || '';
+  if (field.type === 'external') return field.external?.url || '';
+  return '';
 }
 
 function extractPerson(page: any): Person {
   const p = page.properties;
+  // 图片优先级：图片字段 URL > 页面 Cover > 页面 Icon
+  const image =
+    extractFileUrl(p['图片']) ||
+    extractFileUrl(page.cover) ||
+    extractFileUrl(page.icon) ||
+    '';
   return {
     id: page.id,
     name: p['昵称']?.title?.[0]?.plain_text || '',
@@ -42,7 +51,7 @@ function extractPerson(page: any): Person {
     bio: p['个人简介']?.rich_text?.[0]?.plain_text || '',
     contact: p['联系方式']?.rich_text?.[0]?.plain_text || '',
     status: p['状态']?.select?.name || '',
-    image: extractFileUrl(p['图片']),
+    image,
     audio: extractFileUrl(p['语音']),
     loginKey: p['登录Key']?.rich_text?.[0]?.plain_text || '',
     discordId: p['Discord ID']?.rich_text?.[0]?.plain_text || '',
