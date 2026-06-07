@@ -38,7 +38,7 @@ export default async function Header() {
               <AdminLogout />
             </>
           ) : (
-            <Link href="/admin/login" className="text-zinc-600 hover:text-zinc-400 text-xs transition-colors">
+            <Link href="/admin/login" className="text-zinc-600 hover:text-zinc-400 text-sm transition-colors">
               管理登录
             </Link>
           )}
