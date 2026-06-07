@@ -20,6 +20,16 @@ export interface Person {
   discordChannelId: string;
 }
 
+function extractFileUrl(field: any): string {
+  if (!field) return '';
+  // URL 类型字段
+  if (field.url) return field.url;
+  // Files & media 类型字段（直接上传到 Notion）
+  const file = field.files?.[0];
+  if (!file) return '';
+  return file.file?.url || file.external?.url || '';
+}
+
 function extractPerson(page: any): Person {
   const p = page.properties;
   return {
@@ -32,8 +42,8 @@ function extractPerson(page: any): Person {
     bio: p['个人简介']?.rich_text?.[0]?.plain_text || '',
     contact: p['联系方式']?.rich_text?.[0]?.plain_text || '',
     status: p['状态']?.select?.name || '',
-    image: p['图片']?.url || '',
-    audio: p['语音']?.url || '',
+    image: extractFileUrl(p['图片']),
+    audio: extractFileUrl(p['语音']),
     loginKey: p['登录Key']?.rich_text?.[0]?.plain_text || '',
     discordId: p['Discord ID']?.rich_text?.[0]?.plain_text || '',
     discordChannelId: p['Discord 频道 ID']?.rich_text?.[0]?.plain_text || '',
