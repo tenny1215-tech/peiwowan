@@ -71,6 +71,9 @@ export async function POST(req: NextRequest) {
   const invite = await inviteRes.json();
   const inviteUrl = `https://discord.gg/${invite.code}`;
 
+  // 自动将陪玩师状态改为游戏中
+  await updatePerson(companionId, { status: '游戏中' });
+
   // 私信通知陪玩师
   if (person.discordId) {
     await sendDM(
