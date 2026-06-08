@@ -3,6 +3,13 @@ import { Client } from '@notionhq/client';
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const DATABASE_ID = process.env.NOTION_DATABASE_ID!;
 
+export interface Service {
+  game: string;
+  type: string;
+  price: number;
+  unit: string;
+}
+
 export interface Person {
   id: string;
   name: string;
@@ -18,6 +25,24 @@ export interface Person {
   loginKey: string;
   discordId: string;
   discordChannelId: string;
+  services: Service[];
+}
+
+function parseServices(text: string): Service[] {
+  if (!text) return [];
+  return text.split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => {
+      const parts = line.split(' - ').map(s => s.trim());
+      if (parts.length < 3) return null;
+      const [game, type, priceStr] = parts;
+      const priceMatch = priceStr.match(/(\d+)/);
+      const price = priceMatch ? parseInt(priceMatch[1]) : 0;
+      const unit = priceStr.includes('小时') ? '小时' : '次';
+      return { game, type, price, unit };
+    })
+    .filter(Boolean) as Service[];
 }
 
 function extractFileUrl(field: any): string {
@@ -56,6 +81,7 @@ function extractPerson(page: any): Person {
     loginKey: p['登录Key']?.rich_text?.[0]?.plain_text || '',
     discordId: p['Discord ID']?.rich_text?.[0]?.plain_text || '',
     discordChannelId: p['Discord 频道 ID']?.rich_text?.[0]?.plain_text || '',
+    services: parseServices(p['服务项目']?.rich_text?.[0]?.plain_text || ''),
   };
 }
 

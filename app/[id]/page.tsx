@@ -1,6 +1,6 @@
 import { getPersonById, getPeople } from '@/lib/notion';
 import AudioPlayer from '@/components/AudioPlayer';
-import BookingModal from '@/components/BookingModal';
+import ServiceList from '@/components/ServiceList';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -134,10 +134,18 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
           </div>
         )}
 
-        {/* 按钮 */}
-        <div className="flex flex-col gap-3 pt-2 pb-8">
-          <BookingModal companionName={person.name} companionId={person.id} companionPrice={person.price} />
-        </div>
+        {/* 服务项目列表 */}
+        {person.services.length > 0 && (
+          <div className="pt-2 pb-8">
+            <p className="text-zinc-500 text-xs uppercase tracking-wider mb-3">服务项目</p>
+            <ServiceList
+              companionId={person.id}
+              companionName={person.name}
+              companionImage={person.image}
+              services={person.services}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
