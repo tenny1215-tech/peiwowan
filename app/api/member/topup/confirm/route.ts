@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
   const name = searchParams.get('name') || discordId || '';
   const coins = parseInt(searchParams.get('coins') || '0');
   const price = searchParams.get('price') || '';
+  const pin = searchParams.get('pin') || '';
 
   if (!discordId || !coins) {
     return new NextResponse('参数错误', { status: 400 });
@@ -15,7 +16,7 @@ export async function GET(req: NextRequest) {
   // 查找或创建客户
   let customer = await getCustomerByDiscordId(discordId);
   if (!customer) {
-    customer = await createCustomer(name, discordId);
+    customer = await createCustomer(name, discordId, pin);
   }
 
   // 加余额

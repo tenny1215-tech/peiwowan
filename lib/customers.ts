@@ -9,6 +9,7 @@ export interface Customer {
   discordId: string;
   balance: number;
   history: string;
+  pin: string;
 }
 
 function extract(page: any): Customer {
@@ -19,6 +20,7 @@ function extract(page: any): Customer {
     discordId: p['Discord ID']?.rich_text?.[0]?.plain_text || '',
     balance: p['余额']?.number ?? 0,
     history: p['充值记录']?.rich_text?.[0]?.plain_text || '',
+    pin: p['PIN']?.rich_text?.[0]?.plain_text || '',
   };
 }
 
@@ -31,7 +33,7 @@ export async function getCustomerByDiscordId(discordId: string): Promise<Custome
   return extract(res.results[0]);
 }
 
-export async function createCustomer(name: string, discordId: string): Promise<Customer> {
+export async function createCustomer(name: string, discordId: string, pin: string): Promise<Customer> {
   const page = await notion.pages.create({
     parent: { database_id: DB },
     properties: {
@@ -39,6 +41,7 @@ export async function createCustomer(name: string, discordId: string): Promise<C
       'Discord ID': { rich_text: [{ text: { content: discordId } }] },
       '余额': { number: 0 },
       '充值记录': { rich_text: [{ text: { content: '' } }] },
+      'PIN': { rich_text: [{ text: { content: pin } }] },
     },
   });
   return extract(page);
@@ -47,8 +50,8 @@ export async function createCustomer(name: string, discordId: string): Promise<C
 export async function addBalance(id: string, coins: number, note: string, currentHistory: string): Promise<void> {
   const date = new Date().toLocaleDateString('zh-CN', { timeZone: 'Europe/Paris' });
   const newHistory = currentHistory
-    ? `${currentHistory}\n${date} +${coins}币（${note}）`
-    : `${date} +${coins}币（${note}）`;
+    ? `${currentHistory}\n${date} +${coins}硬币（${note}）`
+    : `${date} +${coins}硬币（${note}）`;
 
   await notion.pages.update({
     page_id: id,

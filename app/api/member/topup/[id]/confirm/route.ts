@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   // 查找或创建客户
   let customer = await getCustomerByDiscordId(request.discordId);
   if (!customer) {
-    customer = await createCustomer(request.name || request.discordId, request.discordId);
+    customer = await createCustomer(request.name || request.discordId, request.discordId, request.pin || '');
   }
 
   // 加余额

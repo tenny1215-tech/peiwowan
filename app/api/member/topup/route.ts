@@ -17,17 +17,17 @@ async function getFeishuToken(): Promise<string> {
 }
 
 export async function POST(req: NextRequest) {
-  const { discordId, name, coins, price } = await req.json();
+  const { discordId, name, coins, price, pin } = await req.json();
   if (!discordId || !coins) return NextResponse.json({ error: '缺少参数' }, { status: 400 });
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiwowan-xk56-kappa.vercel.app';
 
-  // 把充值信息编码进确认链接，不需要 Blob 存储
   const params = new URLSearchParams({
     discordId,
     name: name || discordId,
     coins: String(coins),
     price,
+    ...(pin ? { pin } : {}),
   });
   const confirmUrl = `${baseUrl}/api/member/topup/confirm?${params.toString()}`;
 

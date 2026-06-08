@@ -16,11 +16,13 @@ export default function TopupPage() {
   const [step, setStep] = useState<Step>('select');
   const [selected, setSelected] = useState<typeof PACKAGES[0] | null>(null);
   const [discordId, setDiscordId] = useState('');
+  const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   async function handleSubmit() {
     if (!discordId.trim()) { setError('请填写 Discord ID'); return; }
+    if (!pin.trim() || pin.trim().length < 4) { setError('请设置至少4位 PIN 码'); return; }
     setLoading(true);
     setError('');
     const res = await fetch('/api/member/topup', {
@@ -31,6 +33,7 @@ export default function TopupPage() {
         name: discordId.trim(),
         coins: selected!.coins,
         price: selected!.price,
+        pin: pin.trim(),
       }),
     });
     setLoading(false);
@@ -90,6 +93,14 @@ export default function TopupPage() {
               value={discordId}
               onChange={(e) => setDiscordId(e.target.value)}
               placeholder="Discord ID（一定要填写）"
+              className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
+            />
+            <input
+              type="password"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              placeholder="设置登录 PIN 码（4-6位数字）"
+              maxLength={6}
               className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
             />
             {error && <p className="text-red-400 text-xs">{error}</p>}
