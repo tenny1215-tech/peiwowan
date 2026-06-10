@@ -1,5 +1,6 @@
 import { getCustomerByDiscordId } from '@/lib/customers';
 import Link from 'next/link';
+import MemberLogout from '@/components/MemberLogout';
 
 export const revalidate = 0;
 
@@ -32,7 +33,7 @@ export default async function MemberDashboard({ params }: { params: Promise<{ di
     <div className="min-h-screen bg-black px-4 py-8">
       <div className="max-w-sm mx-auto space-y-5">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-zinc-500 hover:text-white text-sm transition-colors">← 返回</Link>
+          <MemberLogout />
           <Link href="/member/topup" className="bg-pink-500 hover:bg-pink-400 text-white text-sm px-4 py-2 rounded-full font-semibold transition-colors">
             + 充值
           </Link>
