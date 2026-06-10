@@ -37,16 +37,26 @@ export default function ServiceCheckout({
 
   const total = service.price * qty;
 
-  // 检查本地登录状态
+  // 检查本地登录状态，并刷新最新余额
   useEffect(() => {
     const saved = localStorage.getItem(SESSION_KEY);
-    if (saved) {
-      try {
-        const s: Session = JSON.parse(saved);
-        setSession(s);
-        setStep('confirm');
-      } catch {}
-    }
+    if (!saved) return;
+    try {
+      const s: Session = JSON.parse(saved);
+      setSession(s);
+      setStep('confirm');
+      // 从服务器拉最新余额
+      fetch(`/api/member/${encodeURIComponent(s.discordId)}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data) {
+            const updated = { ...s, balance: data.balance };
+            localStorage.setItem(SESSION_KEY, JSON.stringify(updated));
+            setSession(updated);
+          }
+        })
+        .catch(() => {});
+    } catch {}
   }, []);
 
   async function handleLogin() {
