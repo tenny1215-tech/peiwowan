@@ -1,6 +1,5 @@
 import { getCustomerByDiscordId } from '@/lib/customers';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 
 export const revalidate = 0;
 
@@ -8,7 +7,22 @@ export default async function MemberDashboard({ params }: { params: Promise<{ di
   const { discordId } = await params;
   const decoded = decodeURIComponent(discordId);
   const customer = await getCustomerByDiscordId(decoded);
-  if (!customer) return notFound();
+
+  if (!customer) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
+        <div className="max-w-sm w-full text-center space-y-4">
+          <p className="text-4xl">⏳</p>
+          <h1 className="text-white text-xl font-bold">账号确认中</h1>
+          <p className="text-zinc-400 text-sm">充值申请正在处理，确认收款后账号自动激活</p>
+          <p className="text-zinc-600 text-xs">通常 5 分钟内处理完成</p>
+          <Link href="/member/topup" className="block text-pink-400 text-sm hover:text-pink-300 transition-colors">
+            返回充值页
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const historyLines = customer.history
     ? customer.history.split('\n').filter(Boolean).reverse()
@@ -31,7 +45,7 @@ export default async function MemberDashboard({ params }: { params: Promise<{ di
         </div>
 
         <Link
-          href="/"
+          href="/companions"
           className="block w-full bg-[#5865F2] hover:bg-[#4752C4] text-white py-3 rounded-2xl font-semibold text-center transition-colors"
         >
           🎮 去预约陪玩
