@@ -16,7 +16,7 @@ export default async function Header() {
 
         <nav className="hidden md:flex items-center gap-8">
           <Link href="/" className="text-zinc-400 hover:text-white text-sm transition-colors">首页</Link>
-          <Link href="/companions" className="text-zinc-400 hover:text-white text-sm transition-colors">陪玩列表</Link>
+          <Link href="/companions" className="bg-[#CCFF00] text-black text-sm font-semibold px-3 py-1 rounded-full hover:bg-[#b8e600] transition-colors">陪玩列表</Link>
           <Link href="/about" className="text-zinc-400 hover:text-white text-sm transition-colors">关于我们</Link>
         </nav>
 
