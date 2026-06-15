@@ -22,7 +22,7 @@ export default function TopupPage() {
 
   async function handleSubmit() {
     if (!discordId.trim()) { setError('请填写 Discord ID'); return; }
-    if (!pin.trim() || pin.trim().length < 4) { setError('请设置至少4位 PIN 码'); return; }
+    if (!pin.trim() || pin.trim().length < 6) { setError('请设置至少6位密码'); return; }
     setLoading(true);
     setError('');
     const res = await fetch('/api/member/topup', {
@@ -99,8 +99,8 @@ export default function TopupPage() {
               type="password"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
-              placeholder="设置登录 PIN 码（4-6位数字）"
-              maxLength={6}
+              placeholder="设置登录密码（6-20位，数字或字母）"
+              maxLength={20}
               className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
             />
             {error && <p className="text-red-400 text-xs">{error}</p>}

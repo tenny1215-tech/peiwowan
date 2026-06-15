@@ -73,8 +73,8 @@ export default function MemberPage() {
             value={pin}
             onChange={(e) => setPin(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-            placeholder="PIN 码"
-            maxLength={6}
+            placeholder="登录密码"
+            maxLength={20}
             className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
           />
           {error && <p className="text-red-400 text-sm">{error}</p>}
