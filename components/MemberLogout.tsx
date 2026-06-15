@@ -5,7 +5,7 @@ export default function MemberLogout() {
   const router = useRouter();
 
   function logout() {
-    localStorage.removeItem('peiwowan_member');
+    localStorage.removeItem('peiniwan_member');
     router.push('/member');
   }
 

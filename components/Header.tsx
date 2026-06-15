@@ -11,7 +11,7 @@ export default async function Header() {
     <header className="w-full bg-[#161616] border-b border-white/5 px-6 py-4 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-white font-black text-xl tracking-tight">
-          陪我<span className="text-[#CCFF00]">玩.</span>
+          陪你<span className="text-[#CCFF00]">玩.</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">

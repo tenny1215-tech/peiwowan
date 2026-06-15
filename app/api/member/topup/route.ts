@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   const { discordId, name, coins, price, pin } = await req.json();
   if (!discordId || !coins) return NextResponse.json({ error: '缺少参数' }, { status: 400 });
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiwowan-xk56-kappa.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
 
   const params = new URLSearchParams({
     discordId,

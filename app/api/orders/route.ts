@@ -26,7 +26,7 @@ async function sendFeishuNotification(order: {
   createdAt: string;
 }) {
   const token = await getFeishuToken();
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiwowan-xk56-kappa.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
   const confirmUrl = `${baseUrl}/api/orders/${order.id}/confirm`;
   const time = new Date(order.createdAt).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris' });
 

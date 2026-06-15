@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse(`充值处理失败: ${err?.message || '未知错误'}`, { status: 500 });
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiwowan-xk56-kappa.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
   return NextResponse.redirect(
     `${baseUrl}/admin/topup-confirmed?name=${encodeURIComponent(name)}&coins=${coins}&discord=${encodeURIComponent(discordId)}`
   );

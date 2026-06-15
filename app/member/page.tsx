@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const SESSION_KEY = 'peiwowan_member';
+const SESSION_KEY = 'peiniwan_member';
 
 export default function MemberPage() {
   const [discordId, setDiscordId] = useState('');

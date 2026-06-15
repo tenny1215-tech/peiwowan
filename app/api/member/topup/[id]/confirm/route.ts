@@ -24,6 +24,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   // 删除充值申请
   await del(blobs[0].url);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiwowan-xk56-kappa.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
   return NextResponse.redirect(`${baseUrl}/admin/topup-confirmed?name=${encodeURIComponent(request.name)}&coins=${request.coins}&discord=${encodeURIComponent(request.discordId)}`);
 }

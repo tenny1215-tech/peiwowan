@@ -5,7 +5,7 @@ import { Service } from '@/lib/notion';
 
 type Step = 'login' | 'confirm' | 'done';
 
-const SESSION_KEY = 'peiwowan_member';
+const SESSION_KEY = 'peiniwan_member';
 
 interface Session {
   discordId: string;

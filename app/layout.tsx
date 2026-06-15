@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "陪玩列表",
+  title: "陪你玩",
   description: "找到你的游戏伙伴",
 };
 

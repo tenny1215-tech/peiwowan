@@ -5,7 +5,7 @@ export default function About() {
     <main className="min-h-screen bg-[#181818] px-6 py-20">
       <div className="max-w-3xl mx-auto">
         <p className="text-[#CCFF00] text-sm font-semibold mb-3 tracking-wide">关于我们</p>
-        <h1 className="text-white text-4xl md:text-5xl font-black mb-6">陪我玩.</h1>
+        <h1 className="text-white text-4xl md:text-5xl font-black mb-6">陪你玩.</h1>
         <p className="text-zinc-400 text-lg leading-relaxed mb-8">
           我们是一个专为欧洲华人打造的陪玩平台，连接欧洲华人与国内顶尖陪玩。
           无论是游戏陪练、语音聊天，还是解闷陪伴，我们都致力于让每一位在欧洲的华人不再孤单。
