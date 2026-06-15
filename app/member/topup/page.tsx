@@ -99,7 +99,7 @@ export default function TopupPage() {
               type="password"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
-              placeholder="设置登录密码（6-20位，数字或字母）"
+              placeholder="设置登录密码（6-20位）"
               maxLength={20}
               className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
             />
