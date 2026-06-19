@@ -13,11 +13,13 @@ export default function ServiceList({
   companionId,
   companionName,
   companionImage,
+  companionStatus,
   services,
 }: {
   companionId: string;
   companionName: string;
   companionImage: string;
+  companionStatus: string;
   services: Service[];
 }) {
   const [selected, setSelected] = useState<Service | null>(null);
@@ -51,6 +53,7 @@ export default function ServiceList({
           companionId={companionId}
           companionName={companionName}
           companionImage={companionImage}
+          companionStatus={companionStatus}
           service={selected}
           onClose={() => setSelected(null)}
         />

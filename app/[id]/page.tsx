@@ -142,6 +142,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
               companionId={person.id}
               companionName={person.name}
               companionImage={person.image}
+              companionStatus={person.status}
               services={person.services}
             />
           </div>

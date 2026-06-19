@@ -17,12 +17,14 @@ export default function ServiceCheckout({
   companionId,
   companionName,
   companionImage,
+  companionStatus,
   service,
   onClose,
 }: {
   companionId: string;
   companionName: string;
   companionImage: string;
+  companionStatus: string;
   service: Service;
   onClose: () => void;
 }) {
@@ -130,8 +132,17 @@ export default function ServiceCheckout({
 
         <div className="p-5 space-y-4">
 
+          {/* 游戏中状态 - 禁止预约 */}
+          {companionStatus === '游戏中' && (
+            <div className="text-center py-6 space-y-3">
+              <p className="text-3xl">🎮</p>
+              <p className="text-white font-semibold">陪玩正在接单中，请稍等</p>
+              <p className="text-zinc-500 text-sm">完成当前订单后即可预约</p>
+            </div>
+          )}
+
           {/* 完成状态 */}
-          {step === 'done' && (
+          {companionStatus !== '游戏中' && step === 'done' && (
             <div className="text-center space-y-4 py-4">
               <p className="text-3xl">🎮</p>
               <p className="text-white font-bold">预约成功！</p>
@@ -144,7 +155,7 @@ export default function ServiceCheckout({
           )}
 
           {/* 登录状态 */}
-          {step === 'login' && (
+          {companionStatus !== '游戏中' && step === 'login' && (
             <div className="space-y-3">
               <p className="text-zinc-400 text-sm text-center">登录账户后预约</p>
               <input type="text" value={discordId} onChange={e => setDiscordId(e.target.value)}
@@ -169,7 +180,7 @@ export default function ServiceCheckout({
           )}
 
           {/* 确认支付状态 */}
-          {step === 'confirm' && session && (
+          {companionStatus !== '游戏中' && step === 'confirm' && session && (
             <>
               {/* 服务信息 */}
               <div className="bg-zinc-800 rounded-2xl p-4 space-y-3">
