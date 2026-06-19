@@ -41,7 +41,7 @@ export default async function MemberDashboard({ params }: { params: Promise<{ di
 
         <div className="text-center py-4">
           <p className="text-zinc-400 text-sm mb-1">你好，{customer.name || decoded}</p>
-          <p className="text-white text-6xl font-bold">{customer.balance}</p>
+          <p className="text-white text-6xl font-bold"><span className="text-3xl align-top mt-2 inline-block">¥</span>{customer.balance}</p>
           <p className="text-zinc-500 text-sm mt-1">当前余额（硬币）</p>
         </div>
 
