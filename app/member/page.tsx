@@ -10,6 +10,7 @@ export default function MemberPage() {
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [checking, setChecking] = useState(true);
   const router = useRouter();
 
   // 有 session 直接跳账户页
@@ -20,9 +21,11 @@ export default function MemberPage() {
         const s = JSON.parse(saved);
         if (s.discordId) {
           router.replace(`/member/${encodeURIComponent(s.discordId)}`);
+          return;
         }
       } catch {}
     }
+    setChecking(false);
   }, [router]);
 
   async function handleLogin() {
@@ -49,6 +52,8 @@ export default function MemberPage() {
       setError(data.error || '登录失败');
     }
   }
+
+  if (checking) return <div className="min-h-screen bg-black" />;
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
