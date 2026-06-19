@@ -7,8 +7,12 @@ import { notFound } from 'next/navigation';
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const people = await getPeople();
-  return people.map((p) => ({ id: p.id }));
+  try {
+    const people = await getPeople();
+    return people.map((p) => ({ id: p.id }));
+  } catch {
+    return [];
+  }
 }
 
 const gameColors: Record<string, string> = {
