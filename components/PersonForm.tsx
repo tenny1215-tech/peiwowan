@@ -30,7 +30,7 @@ const empty: FormData = {
 export default function PersonForm({ initial, personId }: Props) {
   const [form, setForm] = useState<FormData>(() => {
     const base = initial || empty;
-    return { ...base, loginKey: base.loginKey || generateKey() };
+    return { ...base, loginKey: base.loginKey || '' };
   });
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -84,19 +84,17 @@ export default function PersonForm({ initial, personId }: Props) {
       {/* 登录 Key */}
       <Field label="登录 Key（发给陪玩师本人）">
         <div className="flex items-center gap-2">
-          <span className="flex-1 bg-zinc-800 text-pink-300 rounded-xl px-4 py-3 text-sm font-mono tracking-wider">
-            {form.loginKey}
-          </span>
+          <input
+            type="text"
+            value={form.loginKey}
+            onChange={(e) => setForm({ ...form, loginKey: e.target.value })}
+            placeholder="自定义登录 Key，例：pw-xiaomei"
+            className="flex-1 bg-zinc-800 text-pink-300 rounded-xl px-4 py-3 text-sm font-mono tracking-wider outline-none focus:ring-1 focus:ring-pink-500 placeholder:text-zinc-600"
+          />
           <button type="button" onClick={copyKey}
             className="bg-zinc-700 hover:bg-zinc-600 text-white px-3 py-3 rounded-xl text-sm transition-colors whitespace-nowrap">
             {copied ? '已复制' : '复制'}
           </button>
-          {!personId && (
-            <button type="button" onClick={() => setForm({ ...form, loginKey: generateKey() })}
-              className="bg-zinc-700 hover:bg-zinc-600 text-zinc-300 px-3 py-3 rounded-xl text-sm transition-colors">
-              换一个
-            </button>
-          )}
         </div>
       </Field>
 
