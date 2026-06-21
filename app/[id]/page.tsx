@@ -38,7 +38,13 @@ const statusConfig: Record<string, { color: string; label: string }> = {
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const person = await getPersonById(id);
+  let person;
+  try {
+    person = await getPersonById(id);
+  } catch (err) {
+    console.error('[ProfilePage] getPersonById error:', err);
+    return <div className="min-h-screen bg-black text-white p-8">加载失败，请刷新重试</div>;
+  }
   if (!person) return notFound();
 
   const status = statusConfig[person.status] || { color: 'bg-zinc-500', label: person.status };
