@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import AdminLogout from './AdminLogout';
+import MemberHeaderLink from './MemberHeaderLink';
 
 export default async function Header() {
   const cookieStore = await cookies();
@@ -31,9 +32,7 @@ export default async function Header() {
             </Link>
           )}
           <span className="text-zinc-700">|</span>
-          <Link href="/member" className="text-zinc-400 hover:text-white text-sm transition-colors">
-            用户登录
-          </Link>
+          <MemberHeaderLink />
           {isAdmin && (
             <>
               <span className="text-zinc-700">|</span>
