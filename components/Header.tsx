@@ -30,17 +30,15 @@ export default async function Header() {
               陪玩登录
             </Link>
           )}
-          {isAdmin ? (
+          <span className="text-zinc-700">|</span>
+          <Link href="/member" className="text-zinc-400 hover:text-white text-sm transition-colors">
+            用户登录
+          </Link>
+          {isAdmin && (
             <>
-              <Link href="/admin" className="text-zinc-400 hover:text-white text-sm transition-colors">
-                Admin ⚙️
-              </Link>
+              <span className="text-zinc-700">|</span>
               <AdminLogout />
             </>
-          ) : (
-            <Link href="/admin/login" className="text-zinc-600 hover:text-zinc-400 text-sm transition-colors">
-              管理登录
-            </Link>
           )}
         </div>
       </div>

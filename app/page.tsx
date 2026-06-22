@@ -113,9 +113,13 @@ export default function Home() {
       <footer className="border-t border-zinc-800 px-6 py-8 mt-8">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <Link href="/" className="text-white font-black text-xl">
-            陪我<span className="text-[#CCFF00]">玩.</span>
+            陪你<span className="text-[#CCFF00]">玩.</span>
           </Link>
-          <p className="text-zinc-600 text-sm">专为欧洲华人打造 · 跨越时差的陪伴</p>
+          <div className="flex items-center gap-2 text-zinc-600 text-sm">
+            <span>专为欧洲华人打造 · 跨越时差的陪伴</span>
+            <span>|</span>
+            <Link href="/admin/login" className="hover:text-zinc-400 transition-colors">管理登录</Link>
+          </div>
         </div>
       </footer>
 
