@@ -1,6 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+
+const SESSION_KEY = 'peiniwan_member';
 
 const PACKAGES = [
   { coins: 99, price: '¥99', label: '基础包', qr: '/qr-99.png' },
@@ -19,6 +22,23 @@ export default function TopupPage() {
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [checking, setChecking] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const saved = localStorage.getItem(SESSION_KEY);
+    if (!saved) {
+      router.replace('/member/register');
+      return;
+    }
+    try {
+      const s = JSON.parse(saved);
+      if (s.discordId) setDiscordId(s.discordId);
+    } catch {}
+    setChecking(false);
+  }, [router]);
+
+  if (checking) return <div className="min-h-screen bg-black" />;
 
   async function handleSubmit() {
     if (!discordId.trim()) { setError('请填写 Discord ID'); return; }

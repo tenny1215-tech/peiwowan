@@ -93,8 +93,8 @@ export default function MemberPage() {
         </div>
 
         <div className="text-center">
-          <Link href="/member/topup" className="text-zinc-500 hover:text-white text-sm transition-colors">
-            还没有账户？点此充值开通 →
+          <Link href="/member/register" className="text-zinc-500 hover:text-white text-sm transition-colors">
+            还没有账户？立即注册 →
           </Link>
         </div>
 
