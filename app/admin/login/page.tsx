@@ -18,9 +18,9 @@ export default function AdminLogin() {
     });
 
     if (res.ok) {
-      window.location.href = '/admin';
+      window.location.href = 'https://app.notion.com/p/362dce0ff13780a193d9fbce7becd59d';
     } else {
-      window.location.href = '/';
+      setError('密码错误');
     }
     setLoading(false);
   }
