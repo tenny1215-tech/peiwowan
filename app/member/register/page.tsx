@@ -7,7 +7,6 @@ const SESSION_KEY = 'peiniwan_member';
 
 export default function RegisterPage() {
   const [discordId, setDiscordId] = useState('');
-  const [name, setName] = useState('');
   const [pin, setPin] = useState('');
   const [pinConfirm, setPinConfirm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,7 @@ export default function RegisterPage() {
     const res = await fetch('/api/member/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ discordId: discordId.trim(), name: name.trim(), pin: pin.trim() }),
+      body: JSON.stringify({ discordId: discordId.trim(), pin: pin.trim() }),
     });
     const data = await res.json();
     setLoading(false);
@@ -58,13 +57,6 @@ export default function RegisterPage() {
             placeholder="Discord 用户名 *"
             autoCapitalize="none"
             required
-            className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
-          />
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="昵称（可选）"
             className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
           />
           <input
