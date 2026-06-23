@@ -18,6 +18,7 @@ export default function AdminLogin() {
     });
 
     if (res.ok) {
+      localStorage.removeItem('peiniwan_member');
       window.location.href = 'https://app.notion.com/p/362dce0ff13780a193d9fbce7becd59d';
     } else {
       setError('密码错误');

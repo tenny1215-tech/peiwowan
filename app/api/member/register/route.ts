@@ -11,9 +11,12 @@ export async function POST(req: NextRequest) {
 
   const customer = await createCustomer(name?.trim() || discordId.trim(), discordId.trim(), pin.trim());
 
-  return NextResponse.json({
+  const res = NextResponse.json({
     discordId: customer.discordId,
     name: customer.name,
     balance: customer.balance,
   });
+  res.cookies.delete('admin_session');
+  res.cookies.delete('companion_session');
+  return res;
 }

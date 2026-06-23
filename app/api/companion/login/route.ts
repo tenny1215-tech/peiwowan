@@ -15,5 +15,6 @@ export async function POST(req: NextRequest) {
     maxAge: 60 * 60 * 24 * 30,
     path: '/',
   });
+  res.cookies.delete('admin_session');
   return res;
 }

@@ -18,6 +18,7 @@ export default function CompanionLogin() {
     });
 
     if (res.ok) {
+      localStorage.removeItem('peiniwan_member');
       window.location.href = '/companion/room';
     } else {
       const data = await res.json();

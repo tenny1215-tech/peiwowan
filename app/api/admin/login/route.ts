@@ -8,9 +8,10 @@ export async function POST(req: NextRequest) {
     res.cookies.set('admin_session', 'authenticated', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // 7天
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
+    res.cookies.delete('companion_session');
     return res;
   }
 

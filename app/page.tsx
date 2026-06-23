@@ -118,7 +118,7 @@ export default function Home() {
           <div className="flex items-center gap-2 text-zinc-600 text-sm">
             <span>专为欧洲华人打造 · 跨越时差的陪伴</span>
             <span>|</span>
-            <Link href="/admin/login" className="hover:text-zinc-400 transition-colors">管理登录</Link>
+            <Link href="/admin/login" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-400 transition-colors">管理登录</Link>
           </div>
         </div>
       </footer>
