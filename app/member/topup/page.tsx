@@ -19,7 +19,6 @@ export default function TopupPage() {
   const [step, setStep] = useState<Step>('select');
   const [selected, setSelected] = useState<typeof PACKAGES[0] | null>(null);
   const [discordId, setDiscordId] = useState('');
-  const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [checking, setChecking] = useState(true);
@@ -42,7 +41,6 @@ export default function TopupPage() {
 
   async function handleSubmit() {
     if (!discordId.trim()) { setError('请填写 Discord ID'); return; }
-    if (!pin.trim() || pin.trim().length < 6) { setError('请设置至少6位密码'); return; }
     setLoading(true);
     setError('');
     const res = await fetch('/api/member/topup', {
@@ -53,7 +51,6 @@ export default function TopupPage() {
         name: discordId.trim(),
         coins: selected!.coins,
         price: selected!.price,
-        pin: pin.trim(),
       }),
     });
     setLoading(false);
@@ -108,21 +105,10 @@ export default function TopupPage() {
           </div>
 
           <div className="space-y-3">
-            <input
-              type="text"
-              value={discordId}
-              onChange={(e) => setDiscordId(e.target.value)}
-              placeholder="Discord ID（一定要填写）"
-              className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
-            />
-            <input
-              type="password"
-              value={pin}
-              onChange={(e) => setPin(e.target.value)}
-              placeholder="设置登录密码（6-20位）"
-              maxLength={20}
-              className="w-full bg-zinc-900 text-white rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-pink-500 placeholder-zinc-600"
-            />
+            <div className="bg-zinc-900 rounded-2xl px-4 py-3 flex items-center justify-between">
+              <span className="text-zinc-500 text-sm">充值账户</span>
+              <span className="text-white text-sm font-mono">{discordId}</span>
+            </div>
             {error && <p className="text-red-400 text-xs">{error}</p>}
           </div>
 
