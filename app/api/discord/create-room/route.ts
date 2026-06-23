@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPersonById, updatePerson } from '@/lib/notion';
-import { getCustomerByDiscordId, deductBalance } from '@/lib/customers';
+import { getCustomerByDiscordId } from '@/lib/customers';
 
 const DISCORD_API = 'https://discord.com/api/v10';
 const GUILD_ID = process.env.DISCORD_GUILD_ID!;
@@ -13,7 +13,7 @@ function headers() {
   };
 }
 
-async function sendDM(discordUserId: string, message: string) {
+async function sendDMWithButton(discordUserId: string, content: string, customId: string) {
   const dmRes = await fetch(`${DISCORD_API}/users/@me/channels`, {
     method: 'POST',
     headers: headers(),
@@ -24,7 +24,18 @@ async function sendDM(discordUserId: string, message: string) {
   await fetch(`${DISCORD_API}/channels/${dm.id}/messages`, {
     method: 'POST',
     headers: headers(),
-    body: JSON.stringify({ content: message }),
+    body: JSON.stringify({
+      content,
+      components: [{
+        type: 1,
+        components: [{
+          type: 2,
+          style: 3,
+          label: '✅ 接单',
+          custom_id: customId,
+        }],
+      }],
+    }),
   });
 }
 
@@ -32,12 +43,11 @@ export async function POST(req: NextRequest) {
   const { companionId, discordId, cost } = await req.json();
   if (!companionId) return NextResponse.json({ error: '缺少参数' }, { status: 400 });
 
-  // 扣除客户余额
+  // 先验证客户余额，但不扣费
   if (discordId && cost) {
     const customer = await getCustomerByDiscordId(discordId);
     if (!customer) return NextResponse.json({ error: '账户不存在' }, { status: 404 });
     if (customer.balance < cost) return NextResponse.json({ error: '余额不足' }, { status: 402 });
-    await deductBalance(customer.id, cost, customer.balance);
   }
 
   const person = await getPersonById(companionId);
@@ -45,7 +55,6 @@ export async function POST(req: NextRequest) {
 
   let channelId = person.discordChannelId;
 
-  // 没有固定频道则新建，并保存到 Notion
   if (!channelId) {
     const channelName = `peiwan-${person.name || companionId.slice(-6)}`;
     const channelRes = await fetch(`${DISCORD_API}/guilds/${GUILD_ID}/channels`, {
@@ -59,7 +68,6 @@ export async function POST(req: NextRequest) {
     await updatePerson(companionId, { discordChannelId: channelId });
   }
 
-  // 为固定频道生成邀请链接（24小时有效，不限次数）
   const inviteRes = await fetch(`${DISCORD_API}/channels/${channelId}/invites`, {
     method: 'POST',
     headers: headers(),
@@ -71,14 +79,14 @@ export async function POST(req: NextRequest) {
   const invite = await inviteRes.json();
   const inviteUrl = `https://discord.gg/${invite.code}`;
 
-  // 自动将陪玩师状态改为游戏中
-  await updatePerson(companionId, { status: '游戏中' });
-
-  // 私信通知陪玩师
+  // 私信陪玩师（带接单按钮）
   if (person.discordId) {
-    await sendDM(
+    const companionIdClean = companionId.replace(/-/g, '');
+    const customId = `ao|${companionIdClean}|${cost || 0}|${discordId || ''}`;
+    await sendDMWithButton(
       person.discordId,
-      `🎮 有玩家找你陪玩啦！\n点击加入语音房间：${inviteUrl}`
+      `🎮 有新订单！玩家邀请你陪玩\n费用：${cost || 0} 硬币\n加入频道：${inviteUrl}`,
+      customId,
     );
   }
 
