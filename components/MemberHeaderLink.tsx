@@ -28,7 +28,7 @@ export default function MemberHeaderLink() {
 
   return (
     <Link href="/member" className="text-zinc-400 hover:text-white text-sm transition-colors">
-      用户登录
+      用户登录/注册
     </Link>
   );
 }
