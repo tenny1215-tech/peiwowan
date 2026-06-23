@@ -53,26 +53,48 @@ export async function POST(req: NextRequest) {
   const person = await getPersonById(companionId);
   if (!person) return NextResponse.json({ error: '陪玩师不存在' }, { status: 404 });
 
-  let channelId = person.discordChannelId;
+  if (person.status === '游戏中') {
+    return NextResponse.json({ error: '陪玩师正在接待中，请稍后再试' }, { status: 409 });
+  }
 
-  if (!channelId) {
-    const channelName = `peiwan-${person.name || companionId.slice(-6)}`;
+  const companionName = person.name;
+
+  async function createChannel(): Promise<string | null> {
+    const channelName = `peiwan-${companionName || companionId.slice(-6)}`;
     const channelRes = await fetch(`${DISCORD_API}/guilds/${GUILD_ID}/channels`, {
       method: 'POST',
       headers: headers(),
       body: JSON.stringify({ name: channelName, type: 2 }),
     });
-    if (!channelRes.ok) return NextResponse.json({ error: '创建房间失败' }, { status: 500 });
+    if (!channelRes.ok) return null;
     const channel = await channelRes.json();
-    channelId = channel.id;
-    await updatePerson(companionId, { discordChannelId: channelId });
+    await updatePerson(companionId, { discordChannelId: channel.id });
+    return channel.id as string;
   }
 
-  const inviteRes = await fetch(`${DISCORD_API}/channels/${channelId}/invites`, {
-    method: 'POST',
-    headers: headers(),
-    body: JSON.stringify({ max_age: 86400, max_uses: 0, unique: true }),
-  });
+  let channelId: string | null = person.discordChannelId || null;
+
+  if (!channelId) {
+    channelId = await createChannel();
+    if (!channelId) return NextResponse.json({ error: '创建房间失败' }, { status: 500 });
+  }
+
+  async function createInvite(id: string) {
+    return fetch(`${DISCORD_API}/channels/${id}/invites`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({ max_age: 86400, max_uses: 0, unique: true }),
+    });
+  }
+
+  let inviteRes = await createInvite(channelId);
+
+  // 旧频道可能已在 Discord 那边被删除，自动重建一次再重试
+  if (!inviteRes.ok) {
+    channelId = await createChannel();
+    if (!channelId) return NextResponse.json({ error: '创建房间失败' }, { status: 500 });
+    inviteRes = await createInvite(channelId);
+  }
 
   if (!inviteRes.ok) return NextResponse.json({ error: '创建邀请链接失败' }, { status: 500 });
 
