@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Person } from '@/lib/notion';
 
 const STATUSES = [
-  { label: '在线', color: 'bg-green-500 hover:bg-green-400', dot: 'bg-green-400' },
   { label: '可接单', color: 'bg-green-500 hover:bg-green-400', dot: 'bg-green-400' },
   { label: '游戏中', color: 'bg-yellow-500 hover:bg-yellow-400', dot: 'bg-yellow-400' },
   { label: '离线', color: 'bg-zinc-600 hover:bg-zinc-500', dot: 'bg-zinc-400' },

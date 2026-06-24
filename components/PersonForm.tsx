@@ -5,7 +5,7 @@ import { Person } from '@/lib/notion';
 
 const GAMES = ['英雄联盟', '无畏契约', '三角洲'];
 const SKILLS = ['上分带队', '陪练', '开黑', '教学'];
-const STATUSES = ['在线', '接单', '游戏中', '离线'];
+const STATUSES = ['接单', '游戏中', '离线'];
 
 function generateKey() {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -23,7 +23,7 @@ interface Props {
 
 const empty: FormData = {
   name: '', games: [], skills: [], location: '',
-  price: '', bio: '', contact: '', status: '在线',
+  price: '', bio: '', contact: '', status: '接单',
   image: '', audio: '', loginKey: '', discordId: '', discordChannelId: '', services: [],
 };
 
