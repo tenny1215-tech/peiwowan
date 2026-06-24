@@ -19,9 +19,12 @@ async function sendDMWithButton(discordUserId: string, content: string, customId
     headers: headers(),
     body: JSON.stringify({ recipient_id: discordUserId }),
   });
-  if (!dmRes.ok) return;
+  if (!dmRes.ok) {
+    console.error('创建DM频道失败', discordUserId, dmRes.status, await dmRes.text());
+    return;
+  }
   const dm = await dmRes.json();
-  await fetch(`${DISCORD_API}/channels/${dm.id}/messages`, {
+  const msgRes = await fetch(`${DISCORD_API}/channels/${dm.id}/messages`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify({
@@ -37,6 +40,9 @@ async function sendDMWithButton(discordUserId: string, content: string, customId
       }],
     }),
   });
+  if (!msgRes.ok) {
+    console.error('发送DM消息失败', discordUserId, msgRes.status, await msgRes.text());
+  }
 }
 
 export async function POST(req: NextRequest) {
