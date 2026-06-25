@@ -41,7 +41,7 @@ export default function ServiceList({
                 onClick={() => setSelected(s)}
                 className="bg-pink-500 hover:bg-pink-400 text-white text-sm px-4 py-2 rounded-xl font-semibold transition-colors whitespace-nowrap"
               >
-                预约
+                立即下单
               </button>
             </div>
           </div>
