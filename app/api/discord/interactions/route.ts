@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       const companionIdClean = parts[1];
       const cost = parseInt(parts[2] || '0');
       const customerDiscordId = parts[3] || '';
+      const inviteCode = parts[4] || '';
 
       // 补回 UUID 格式
       const companionId = [
@@ -71,7 +72,15 @@ export async function POST(req: NextRequest) {
         type: 7,
         data: {
           content: `✅ 接单成功！已扣除玩家 ${cost} 硬币，加油～`,
-          components: [],
+          components: inviteCode ? [{
+            type: 1,
+            components: [{
+              type: 2,
+              style: 5,
+              label: '🔗 进入频道',
+              url: `https://discord.gg/${inviteCode}`,
+            }],
+          }] : [],
         },
       });
     }

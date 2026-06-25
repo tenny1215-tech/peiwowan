@@ -110,7 +110,7 @@ export async function POST(req: NextRequest) {
   // 私信陪玩师（带接单按钮）
   if (person.discordId) {
     const companionIdClean = companionId.replace(/-/g, '');
-    const customId = `ao|${companionIdClean}|${cost || 0}|${discordId || ''}`;
+    const customId = `ao|${companionIdClean}|${cost || 0}|${discordId || ''}|${invite.code}`;
     await sendDMWithButton(
       person.discordId,
       `🎮 有新订单！玩家邀请你陪玩\n费用：${cost || 0} 硬币\n加入频道：${inviteUrl}`,
