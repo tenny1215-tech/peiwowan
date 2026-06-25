@@ -29,16 +29,10 @@ export default function Home() {
             浏览陪玩 →
           </Link>
           <Link
-            href="/member/topup"
+            href="/member/register"
             className="bg-[#CCFF00] text-black px-8 py-3.5 rounded-lg font-semibold hover:bg-[#b8e600] transition-colors"
           >
-            💰 充值中心
-          </Link>
-          <Link
-            href="/member"
-            className="border border-zinc-700 text-zinc-400 px-8 py-3.5 rounded-lg font-semibold hover:text-white hover:border-zinc-500 transition-colors"
-          >
-            查看余额
+            注册成为会员
           </Link>
         </div>
 
