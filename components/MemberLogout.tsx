@@ -1,12 +1,9 @@
 'use client';
-import { useRouter } from 'next/navigation';
 
 export default function MemberLogout() {
-  const router = useRouter();
-
   function logout() {
     localStorage.removeItem('peiniwan_member');
-    router.push('/member');
+    window.location.href = '/member';
   }
 
   return (
