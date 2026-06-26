@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import ChatWindow from './ChatWindow';
 
 function isLoggedIn() {
   if (typeof window === 'undefined') return false;
-  return !!(localStorage.getItem('member_discord_id') || document.cookie.includes('companion_key=') || document.cookie.includes('admin_token='));
+  return !!(localStorage.getItem('peiniwan_member') || document.cookie.includes('companion_key=') || document.cookie.includes('admin_token='));
 }
 
 function GuestModal({ onClose }: { onClose: () => void }) {
@@ -38,25 +39,27 @@ function GuestModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-export default function CompanionActions({ companionId }: { companionId: string }) {
+export default function CompanionActions({
+  companionId,
+  companionName,
+  companionImage,
+}: {
+  companionId: string;
+  companionName: string;
+  companionImage: string;
+}) {
   const [showModal, setShowModal] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const [followed, setFollowed] = useState(false);
 
   function handleFollow() {
-    if (!isLoggedIn()) {
-      setShowModal(true);
-      return;
-    }
+    if (!isLoggedIn()) { setShowModal(true); return; }
     setFollowed(true);
   }
 
   function handleChat() {
-    if (!isLoggedIn()) {
-      setShowModal(true);
-      return;
-    }
-    // 私讯功能即将接入
-    alert('私讯功能即将上线～');
+    if (!isLoggedIn()) { setShowModal(true); return; }
+    setShowChat(true);
   }
 
   return (
@@ -81,6 +84,15 @@ export default function CompanionActions({ companionId }: { companionId: string 
       </div>
 
       {showModal && <GuestModal onClose={() => setShowModal(false)} />}
+
+      {showChat && (
+        <ChatWindow
+          companionId={companionId}
+          companionName={companionName}
+          companionImage={companionImage}
+          onClose={() => setShowChat(false)}
+        />
+      )}
     </>
   );
 }

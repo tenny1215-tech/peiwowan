@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Person } from '@/lib/notion';
+import CompanionInbox from '@/components/CompanionInbox';
 
 const STATUSES = [
   { label: '可接单', color: 'bg-green-500 hover:bg-green-400', dot: 'bg-green-400' },
@@ -79,6 +80,9 @@ export default function RoomClient({ person }: { person: Person }) {
       </div>
 
       <p className="text-zinc-600 text-xs text-center mt-4">如需修改个人资料请联系管理员</p>
+
+      {/* 私讯收件箱 */}
+      <CompanionInbox companionId={person.id} companionName={person.name} />
 
       {/* 退出 */}
       <div className="mt-8">

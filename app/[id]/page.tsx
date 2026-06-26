@@ -130,7 +130,11 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
             </div>
 
             {/* 关注 + 私讯 */}
-            <CompanionActions companionId={person.id} />
+            <CompanionActions
+              companionId={person.id}
+              companionName={person.name}
+              companionImage={person.image}
+            />
 
             {/* 游戏项目 */}
             {person.games.length > 0 && (
