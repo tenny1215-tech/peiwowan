@@ -55,6 +55,40 @@ export default function Home() {
 
       <div className="max-w-6xl mx-auto px-6"><div className="h-px bg-zinc-800/60" /></div>
 
+      {/* 客服 / 微信群 */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <div className="bg-zinc-900/60 border border-zinc-800 rounded-3xl px-8 py-12 flex flex-col md:flex-row items-center gap-10">
+          {/* 文字 */}
+          <div className="flex-1 text-center md:text-left">
+            <p className="text-[#CCFF00] text-sm font-semibold mb-3 tracking-wide">需要帮助？</p>
+            <h2 className="text-white text-3xl md:text-4xl font-black mb-4 leading-snug">
+              联系我们的客服<br />随时为你解答
+            </h2>
+            <p className="text-zinc-400 text-base leading-relaxed mb-6">
+              充值问题、陪玩预约、使用疑问——有任何问题都可以添加客服微信，也欢迎加入我们的玩家群组，和更多欧洲华人一起玩。
+            </p>
+            <div className="inline-flex items-center gap-2 bg-zinc-800 rounded-full px-5 py-2.5">
+              <span className="text-zinc-400 text-sm">微信号</span>
+              <span className="text-white font-semibold text-sm select-all">yiding_baofu888</span>
+            </div>
+          </div>
+
+          {/* 二维码 */}
+          <div className="flex-shrink-0 flex flex-col items-center gap-3">
+            <div className="bg-white p-3 rounded-2xl shadow-lg">
+              <img
+                src="/wechat-qr.png"
+                alt="客服微信二维码"
+                className="w-44 h-44 object-contain"
+              />
+            </div>
+            <p className="text-zinc-500 text-xs">扫码添加客服 / 加入玩家群</p>
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6"><div className="h-px bg-zinc-800/60" /></div>
+
       {/* Services */}
       <section className="max-w-6xl mx-auto px-6 py-20">
         <p className="text-[#CCFF00] text-sm font-semibold mb-3 tracking-wide">我们的服务</p>

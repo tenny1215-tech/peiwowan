@@ -6,6 +6,7 @@ const SESSION_KEY = 'peiniwan_member';
 
 export default function MemberHeaderLink() {
   const [discordId, setDiscordId] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(SESSION_KEY);
@@ -15,7 +16,10 @@ export default function MemberHeaderLink() {
         if (s.discordId) setDiscordId(s.discordId);
       } catch {}
     }
+    setMounted(true);
   }, []);
+
+  if (!mounted) return null;
 
   if (discordId) {
     return (

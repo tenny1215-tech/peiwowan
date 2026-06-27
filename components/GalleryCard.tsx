@@ -19,7 +19,7 @@ export default function GalleryCard({ person }: { person: Person }) {
     <Link href={`/${person.id}`}>
       <div className="rounded-2xl overflow-hidden bg-zinc-900 cursor-pointer hover:scale-[1.02] transition-transform duration-200 hover:ring-1 hover:ring-zinc-600">
         {/* 图片区域 */}
-        <div className="relative aspect-[3/4]">
+        <div className="relative aspect-square">
           {person.image ? (
             <img src={person.image} alt={person.name} className="w-full h-full object-cover" />
           ) : (
@@ -48,9 +48,9 @@ export default function GalleryCard({ person }: { person: Person }) {
         </div>
 
         {/* 信息区域 */}
-        <div className="p-3">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-white font-semibold text-sm truncate">{person.name}</span>
+        <div className="p-2">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-white font-semibold text-xs truncate">{person.name}</span>
             {person.location && (
               <span className="text-zinc-400 text-xs ml-1 flex-shrink-0">{person.location}</span>
             )}

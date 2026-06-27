@@ -46,7 +46,7 @@ export default function MemberPage() {
         name: data.name,
         balance: data.balance,
       }));
-      router.push(`/member/${encodeURIComponent(data.discordId)}`);
+      window.location.href = `/member/${encodeURIComponent(data.discordId)}`;
     } else {
       const data = await res.json();
       setError(data.error || '登录失败');

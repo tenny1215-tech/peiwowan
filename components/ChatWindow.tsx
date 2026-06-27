@@ -29,12 +29,22 @@ export default function ChatWindow({ companionId, companionName, companionImage,
   const playerName = session.name || session.discordId || '玩家';
 
   useEffect(() => {
+    // 先拉历史消息
+    fetch(`/api/chat/messages?companionId=${encodeURIComponent(companionId)}`)
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setMessages(data); })
+      .catch(() => {});
+
+    // 再订阅实时新消息（去重：历史里已有的不重复添加）
     const pusher = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
     });
     const channel = pusher.subscribe(`chat-${companionId}`);
     channel.bind('new-message', (data: Message) => {
-      setMessages(prev => [...prev, data]);
+      setMessages(prev => {
+        if (prev.some(m => m.timestamp === data.timestamp && m.senderName === data.senderName)) return prev;
+        return [...prev, data];
+      });
     });
     return () => {
       channel.unbind_all();

@@ -34,7 +34,7 @@ export default function RegisterPage() {
         name: data.name,
         balance: data.balance,
       }));
-      router.push('/member/topup');
+      window.location.href = '/member/topup';
     } else {
       setError(data.error || '注册失败');
     }

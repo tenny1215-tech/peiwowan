@@ -1,12 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ChatWindow from './ChatWindow';
 
-function isLoggedIn() {
-  if (typeof window === 'undefined') return false;
-  return !!(localStorage.getItem('peiniwan_member') || document.cookie.includes('companion_key=') || document.cookie.includes('admin_token='));
+const SESSION_KEY = 'peiniwan_member';
+
+function getMemberSession() {
+  if (typeof window === 'undefined') return null;
+  try {
+    const s = localStorage.getItem(SESSION_KEY);
+    return s ? JSON.parse(s) : null;
+  } catch {
+    return null;
+  }
 }
 
 function GuestModal({ onClose }: { onClose: () => void }) {
@@ -51,14 +58,47 @@ export default function CompanionActions({
   const [showModal, setShowModal] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [followed, setFollowed] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
 
-  function handleFollow() {
-    if (!isLoggedIn()) { setShowModal(true); return; }
-    setFollowed(true);
+  // 初始化：检查是否已关注
+  useEffect(() => {
+    const session = getMemberSession();
+    if (!session?.discordId) return;
+    fetch(`/api/member/following?discordId=${encodeURIComponent(session.discordId)}`)
+      .then(r => r.json())
+      .then((list: { id: string }[]) => {
+        if (Array.isArray(list)) {
+          setFollowed(list.some(c => c.id === companionId));
+        }
+      })
+      .catch(() => {});
+  }, [companionId]);
+
+  async function handleFollow() {
+    const session = getMemberSession();
+    if (!session?.discordId) { setShowModal(true); return; }
+
+    setFollowLoading(true);
+    try {
+      const res = await fetch('/api/member/follow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          discordId: session.discordId,
+          companionId,
+          companionName,
+          companionImage,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) setFollowed(data.following);
+    } catch {}
+    setFollowLoading(false);
   }
 
   function handleChat() {
-    if (!isLoggedIn()) { setShowModal(true); return; }
+    const session = getMemberSession();
+    if (!session?.discordId) { setShowModal(true); return; }
     setShowChat(true);
   }
 
@@ -67,7 +107,8 @@ export default function CompanionActions({
       <div className="flex gap-3">
         <button
           onClick={handleFollow}
-          className={`flex-1 rounded-full py-2.5 font-semibold text-sm transition-colors ${
+          disabled={followLoading}
+          className={`flex-1 rounded-full py-2.5 font-semibold text-sm transition-colors disabled:opacity-50 ${
             followed
               ? 'bg-pink-500/20 text-pink-400 border border-pink-500/50'
               : 'border border-pink-500/50 text-pink-400 hover:bg-pink-500/10'

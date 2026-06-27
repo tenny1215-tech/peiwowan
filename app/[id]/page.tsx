@@ -58,7 +58,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
     <div className="min-h-screen bg-black">
       {/* 返回按钮（移动端） */}
       <Link
-        href="/"
+        href="/companions"
         className="md:hidden fixed top-4 left-4 z-20 bg-black/60 backdrop-blur text-white text-sm rounded-full px-4 py-2"
       >
         ← 返回
@@ -84,7 +84,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                 </div>
               )}
               <Link
-                href="/"
+                href="/companions"
                 className="hidden md:flex absolute top-4 left-4 z-20 bg-black/50 backdrop-blur text-white text-sm rounded-full px-4 py-2 hover:bg-black/70 transition-colors"
               >
                 ← 返回

@@ -2,6 +2,7 @@ import { getCustomerByDiscordId } from '@/lib/customers';
 import Link from 'next/link';
 import MemberLogout from '@/components/MemberLogout';
 import MemberGuard from '@/components/MemberGuard';
+import FollowingList from '@/components/FollowingList';
 
 export const revalidate = 0;
 
@@ -53,6 +54,8 @@ export default async function MemberDashboard({ params }: { params: Promise<{ di
           >
             🎮 去预约陪玩
           </Link>
+
+          <FollowingList discordId={decoded} />
 
           <div className="space-y-3">
             <p className="text-zinc-500 text-xs uppercase tracking-wider">充值记录</p>
