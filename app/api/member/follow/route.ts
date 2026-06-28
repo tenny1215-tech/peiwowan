@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { put, get } from '@vercel/blob';
+import { put, list } from '@vercel/blob';
 
 interface FollowedCompanion {
   id: string;
@@ -7,41 +7,51 @@ interface FollowedCompanion {
   image: string;
 }
 
-function blobKey(discordId: string) {
-  return `follow/${discordId.replace(/[^a-zA-Z0-9-_]/g, '_')}.json`;
+const BLOB_PREFIX = 'follow/';
+
+function blobPathname(discordId: string) {
+  return `${BLOB_PREFIX}${discordId.replace(/[^a-zA-Z0-9-_]/g, '_')}.json`;
 }
 
-async function readList(key: string): Promise<FollowedCompanion[]> {
+async function readList(discordId: string): Promise<FollowedCompanion[]> {
   try {
-    const result = await get(key, { access: 'public' });
-    if (!result || result.statusCode !== 200) return [];
-    const text = await new Response(result.stream).text();
-    const data = JSON.parse(text);
+    const pathname = blobPathname(discordId);
+    const { blobs } = await list({ prefix: pathname });
+    const match = blobs.find(b => b.pathname === pathname);
+    if (!match) return [];
+    const res = await fetch(match.url, { cache: 'no-store' });
+    if (!res.ok) return [];
+    const data = await res.json();
     return Array.isArray(data) ? data : [];
-  } catch {
+  } catch (e) {
+    console.error('[follow] readList error:', e);
     return [];
   }
 }
 
 export async function POST(req: Request) {
-  const { discordId, companionId, companionName, companionImage } = await req.json();
-  if (!discordId || !companionId) {
-    return NextResponse.json({ error: 'missing fields' }, { status: 400 });
+  try {
+    const { discordId, companionId, companionName, companionImage } = await req.json();
+    if (!discordId || !companionId) {
+      return NextResponse.json({ error: 'missing fields' }, { status: 400 });
+    }
+
+    const list_ = await readList(discordId);
+    const alreadyFollowing = list_.some(c => c.id === companionId);
+
+    const updated = alreadyFollowing
+      ? list_.filter(c => c.id !== companionId)
+      : [...list_, { id: companionId, name: companionName || '', image: companionImage || '' }];
+
+    await put(blobPathname(discordId), JSON.stringify(updated), {
+      access: 'public',
+      contentType: 'application/json',
+      allowOverwrite: true,
+    });
+
+    return NextResponse.json({ following: !alreadyFollowing, list: updated });
+  } catch (e) {
+    console.error('[follow] POST error:', e);
+    return NextResponse.json({ error: 'server error' }, { status: 500 });
   }
-
-  const key = blobKey(discordId);
-  const list = await readList(key);
-  const alreadyFollowing = list.some(c => c.id === companionId);
-
-  const updated = alreadyFollowing
-    ? list.filter(c => c.id !== companionId)
-    : [...list, { id: companionId, name: companionName || '', image: companionImage || '' }];
-
-  await put(key, JSON.stringify(updated), {
-    access: 'public',
-    contentType: 'application/json',
-    allowOverwrite: true,
-  });
-
-  return NextResponse.json({ following: !alreadyFollowing, list: updated });
 }

@@ -59,6 +59,7 @@ export default function CompanionActions({
   const [showChat, setShowChat] = useState(false);
   const [followed, setFollowed] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
+  const [followError, setFollowError] = useState(false);
 
   // 初始化：检查是否已关注
   useEffect(() => {
@@ -79,6 +80,7 @@ export default function CompanionActions({
     if (!session?.discordId) { setShowModal(true); return; }
 
     setFollowLoading(true);
+    setFollowError(false);
     try {
       const res = await fetch('/api/member/follow', {
         method: 'POST',
@@ -91,8 +93,16 @@ export default function CompanionActions({
         }),
       });
       const data = await res.json();
-      if (res.ok) setFollowed(data.following);
-    } catch {}
+      if (res.ok) {
+        setFollowed(data.following);
+      } else {
+        setFollowError(true);
+        setTimeout(() => setFollowError(false), 3000);
+      }
+    } catch {
+      setFollowError(true);
+      setTimeout(() => setFollowError(false), 3000);
+    }
     setFollowLoading(false);
   }
 
@@ -109,12 +119,14 @@ export default function CompanionActions({
           onClick={handleFollow}
           disabled={followLoading}
           className={`flex-1 rounded-full py-2.5 font-semibold text-sm transition-colors disabled:opacity-50 ${
-            followed
+            followError
+              ? 'border border-red-500/50 text-red-400'
+              : followed
               ? 'bg-pink-500/20 text-pink-400 border border-pink-500/50'
               : 'border border-pink-500/50 text-pink-400 hover:bg-pink-500/10'
           }`}
         >
-          {followed ? '❤️ 已关注' : '♡ 关注'}
+          {followError ? '操作失败，请重试' : followLoading ? '...' : followed ? '❤️ 已关注' : '♡ 关注'}
         </button>
         <button
           onClick={handleChat}
