@@ -17,12 +17,15 @@ export default async function CompanionsList() {
           </div>
 
           {/* 客服提示 */}
-          <div className="flex-shrink-0 flex flex-col items-center gap-1.5 pt-1">
-            <p className="text-zinc-400 text-xs text-center whitespace-nowrap">下单前请添加客服微信</p>
-            <div className="bg-white p-1.5 rounded-lg">
+          <div className="flex-shrink-0 flex items-center gap-3 pt-1">
+            <div className="text-right">
+              <p className="text-zinc-300 text-sm font-medium leading-snug">下单前请添加</p>
+              <p className="text-zinc-300 text-sm font-medium leading-snug">客服微信</p>
+              <p className="text-zinc-500 text-xs mt-1">yiding_baofu888</p>
+            </div>
+            <div className="bg-white p-1.5 rounded-lg flex-shrink-0">
               <img src="/wechat-qr.png" alt="客服微信" className="w-16 h-16 object-contain" />
             </div>
-            <p className="text-zinc-600 text-[10px]">yiding_baofu888</p>
           </div>
         </div>
 
