@@ -4,6 +4,7 @@ import { put } from '@vercel/blob';
 const FEISHU_API = 'https://open.feishu.cn/open-apis';
 const NOTIFY_OPEN_IDS = [
   'ou_ae7fa64e5ea387d1faceb978afc73ba4', // Tenny
+  'ou_10d1a58b2eb0a134bea702066bfe39ff', // 龙浩
 ];
 
 async function getFeishuToken(): Promise<string> {
