@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { put } from '@vercel/blob';
 
 const FEISHU_API = 'https://open.feishu.cn/open-apis';
-const TENNY_OPEN_ID = 'ou_ae7fa64e5ea387d1faceb978afc73ba4';
+const NOTIFY_OPEN_IDS = [
+  'ou_ae7fa64e5ea387d1faceb978afc73ba4', // Tenny
+];
 
 async function getFeishuToken(): Promise<string> {
   const res = await fetch(`${FEISHU_API}/auth/v3/tenant_access_token/internal`, {
@@ -20,30 +23,34 @@ export async function POST(req: NextRequest) {
   const { discordId, name, coins, price, pin } = await req.json();
   if (!discordId || !coins) return NextResponse.json({ error: '缺少参数' }, { status: 400 });
 
+  const id = crypto.randomUUID();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
 
-  const params = new URLSearchParams({
-    discordId,
-    name: name || discordId,
-    coins: String(coins),
-    price,
-    ...(pin ? { pin } : {}),
+  // 存储充值申请到 Blob（防重复点击）
+  await put(`topups/${id}.json`, JSON.stringify({ discordId, name, coins, price, pin }), {
+    access: 'public',
+    contentType: 'application/json',
+    allowOverwrite: false,
   });
-  const confirmUrl = `${baseUrl}/api/member/topup/confirm?${params.toString()}`;
 
+  const confirmUrl = `${baseUrl}/api/member/topup/${id}/confirm`;
   const message = `💰 新充值申请\n\n用户：${name || discordId}（${discordId}）\n套餐：${price} → ${coins}硬币\n\n确认收款后点击链接到账 👇\n${confirmUrl}`;
 
   try {
     const token = await getFeishuToken();
-    await fetch(`${FEISHU_API}/im/v1/messages?receive_id_type=open_id`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        receive_id: TENNY_OPEN_ID,
-        msg_type: 'text',
-        content: JSON.stringify({ text: message }),
-      }),
-    });
+    await Promise.all(
+      NOTIFY_OPEN_IDS.map((open_id) =>
+        fetch(`${FEISHU_API}/im/v1/messages?receive_id_type=open_id`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            receive_id: open_id,
+            msg_type: 'text',
+            content: JSON.stringify({ text: message }),
+          }),
+        })
+      )
+    );
   } catch (e) {
     console.error('飞书通知失败:', e);
   }
