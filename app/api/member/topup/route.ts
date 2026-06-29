@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { put } from '@vercel/blob';
 
 const FEISHU_API = 'https://open.feishu.cn/open-apis';
 const NOTIFY_OPEN_IDS = [
@@ -27,14 +26,16 @@ export async function POST(req: NextRequest) {
   const id = crypto.randomUUID();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
 
-  // 存储充值申请到 Blob（防重复点击）
-  await put(`topups/${id}.json`, JSON.stringify({ discordId, name, coins, price, pin }), {
-    access: 'public',
-    contentType: 'application/json',
-    allowOverwrite: false,
+  const params = new URLSearchParams({
+    id,
+    discordId,
+    name: name || discordId,
+    coins: String(coins),
+    price,
+    ...(pin ? { pin } : {}),
   });
+  const confirmUrl = `${baseUrl}/api/member/topup/confirm?${params.toString()}`;
 
-  const confirmUrl = `${baseUrl}/api/member/topup/${id}/confirm`;
   const message = `💰 新充值申请\n\n用户：${name || discordId}（${discordId}）\n套餐：${price} → ${coins}硬币\n\n确认收款后点击链接到账 👇\n${confirmUrl}`;
 
   try {

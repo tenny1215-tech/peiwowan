@@ -3,32 +3,40 @@ import { getCustomerByDiscordId, createCustomer, addBalance } from '@/lib/custom
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const discordId = searchParams.get('discordId');
-  const name = searchParams.get('name') || discordId || '';
+  const id = searchParams.get('id') || '';
+  const discordId = searchParams.get('discordId') || '';
+  const name = searchParams.get('name') || discordId;
   const coins = parseInt(searchParams.get('coins') || '0');
   const price = searchParams.get('price') || '';
   const pin = searchParams.get('pin') || '';
 
-  if (!discordId || !coins) {
+  if (!discordId || !coins || !id) {
     return new NextResponse('参数错误', { status: 400 });
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
+
   try {
-    // 查找或创建客户
     let customer = await getCustomerByDiscordId(discordId);
+
+    // 防重复：检查 UUID 是否已在充值记录里
+    if (customer && customer.history.includes(id)) {
+      return NextResponse.redirect(
+        `${baseUrl}/admin/topup-confirmed?name=${encodeURIComponent(name)}&coins=${coins}&discord=${encodeURIComponent(discordId)}&duplicate=1`
+      );
+    }
+
     if (!customer) {
       customer = await createCustomer(name, discordId, pin);
     }
 
-    // 加余额
     const newBalance = customer.balance + coins;
-    await addBalance(customer.id, newBalance, price, customer.history);
+    await addBalance(customer.id, newBalance, `${price} [${id}]`, customer.history);
   } catch (err: any) {
     console.error('充值确认失败:', err?.message || err);
     return new NextResponse(`充值处理失败: ${err?.message || '未知错误'}`, { status: 500 });
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://peiniwan.vercel.app';
   return NextResponse.redirect(
     `${baseUrl}/admin/topup-confirmed?name=${encodeURIComponent(name)}&coins=${coins}&discord=${encodeURIComponent(discordId)}`
   );
