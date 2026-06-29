@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const FEISHU_API = 'https://open.feishu.cn/open-apis';
-const NOTIFY_OPEN_IDS = [
-  'ou_ae7fa64e5ea387d1faceb978afc73ba4', // Tenny
-  'ou_10d1a58b2eb0a134bea702066bfe39ff', // 龙浩
-];
+const NOTIFY_CHAT_ID = 'oc_ccaa173b1486710feeff19876204306e'; // peiniwan 群
 
 async function getFeishuToken(): Promise<string> {
   const res = await fetch(`${FEISHU_API}/auth/v3/tenant_access_token/internal`, {
@@ -40,19 +37,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const token = await getFeishuToken();
-    await Promise.all(
-      NOTIFY_OPEN_IDS.map((open_id) =>
-        fetch(`${FEISHU_API}/im/v1/messages?receive_id_type=open_id`, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            receive_id: open_id,
-            msg_type: 'text',
-            content: JSON.stringify({ text: message }),
-          }),
-        })
-      )
-    );
+    await fetch(`${FEISHU_API}/im/v1/messages?receive_id_type=chat_id`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        receive_id: NOTIFY_CHAT_ID,
+        msg_type: 'text',
+        content: JSON.stringify({ text: message }),
+      }),
+    });
   } catch (e) {
     console.error('飞书通知失败:', e);
   }
